@@ -1,1 +1,176 @@
+En premier il faudra avoir une compte rescue lors de l'installation de la distribution, debian ou ubuntu ou autre comme l'utilisateur par defaut
+
+allez y sur paramètres -- réseau --filaire
+
+dans filaire il y aura une petite roue dentée, naviguez à l'onglet IPV4, et dans la rubrique DNS décochez l'option automatique.
+
+Cella permettra d'ajouter un DNS manuellement, pointez vers l'ip du serveur AD / samba 4 ZENTYAL configurée et installé avec le rôle Active Directory au préalable.
+
+exemple
+
+DNS: 192.168.50.xx
+
+Aleez y sur le site web pour télècharger Pbis-open le connecteur Active Directory / Samba 4 pour linux
+
+https://github.com/BeyondTrust/pbis-open/releases parmis le possibilités choisissez .deb pour debian, ubuntu et ses dérivées.
+
+faites clique droit de la souris par example dans la version à télècharger pbisxxxxx.deb.sh (choisissez l'option copier le lien)
+
+ouvrez sur la machine a passer en AD un terminal et écrivez
+
+wget + faites un clique droit de souris pour coller le lien de github tout à l'heure copié, et faites enter lui va commencer a faire le télèchargement.
+
+faites un ls sur le terminal pour savoir oú est le dossier pbisxxx.deb (il se présente comme un point deb mais il devrait être un packet .deb) pas de probléme
+
+toujours avec votre terminal vous allez entrer sur vôtre dossier .deb
+
+cd pbisopenxxx.deb
+
+Et la ldedans vous allez trouver un script install.sh
+
+Toujour sur le terminal faites le suivant:
+
+chmod a+x install.sh ( pour donner des permissions de execution )
+
+toujour sur le terminal écrivez le suivant et faites enter
+
+./install.sh
+
+suivez l'intruction si c'est un debian faut choisir 1 fedora 2
+
+A la fin de l'installation il va vous demandez pour que la machine soit joint en domaine il faudra
+
+/opt/pbis/bin/domainjoin-cli join sknlab.local Administrator
+
+(allez dans cette configuration si besoin)
+
+Allez dans le cas dans les paramétres de la machines comptes en ligne et choisissez Connexion en ligne (kerberos) en mettant le compte de l'administrator comme suit:
+
+Administrator@SKNLAB.LOCAL avec le mot de passe correspondant
+
+et vous pouvez faire un reboot
+
+Dans le menu de login de la machine pour la prémiere et connectez
+
+UTILISATEUR@SKNLAB.LOCAL
+
+ou
+
+SKNLAB\utilisateur ( je suis quasi sur que ceci que j'ai utilisé)
+
+avec la mot de passe correspondante et voila
+
+ATTENTION LES UTILISATEUR NE SONT PAS ADMIONISTRATEURS LOCAUX DE LA MACHINE
+
+sudo usermod -aG sudo hugo.barbosa@SKNLAB.LOCAL
+
+et la l'utilsateur est dans les utilisateurs locaux comme administrtateur, pouvant avoir toutes les droits.
+
+j'ai reboot la machine car il acceptait meme pas l'utilsateur local et la j'ai réussie a me connecter avec rescue et aussi mon utilisateur de domaine hugo.barbosa dejà appartenant aux groupe sudo....
+
+Nous allons tester si effectivement je peux faire des opérations comme un utilisateur lambda
+
+il faudra editer le /etc/sudoers/
+
+SKNLAB\\hugo.barbosa ALL=(ALL:ALL) ALL
+
+REBOOT
+
+pas foncionnée j'ai enlevé l'user hugo.barbosa et la les comptes AD refoncionnent
+
+allons essayer de tester en fesant la suite Vérifiez d'abord aduser à l'aide de l'ID de commande
+
+#id ( #id domain\\aduser01 )
+
+
+Résultats sur le mien :
+
+SMB\aduser01@linux01:~/Desktop$ id smb\\aduser02
+uid=914883676(SMB\aduser02) gid=914883073(SMB\domain^users) groups=914883073(SMB\domain^users),1544(BUILTIN\Administrators),1545(BUILTIN\Users),914883072(SMB\domain^admins)
+
+
+getent passwdet gid NUMBERSne fonctionne pas pour moi. DOMAIN\\domain^userstravaille pour moi
+
+%SMB\\domain^users ALL=(ALL) ALL
+
+
+%SKNLAB\\domain^admins ALL=(ALL) ALL
+
+reboot
+
+À FONCIONNÉ !!! tous les utilisateurs dans le groupe zentyal domain admin peuvent avoir les pouvoir de sudo !!!!
+
+comme nous le savons tous, l'utilisateur AD individuel travaille également
+
+
+SMB\\ ALL=(ALL) ALL
+
+
+dans la machine pbis open le depot me bloquait les maj donc je l'ai desactivé et la ça permets de faire les maj 
+
+
+
+
+
+en suite pour le rdp j'ai installé la connection des bureaux distants sur la machine debian ansi comme xrdp dans le cas :
+
+II. Installation de xRDP sous Debian 10
+Ouvrez un Terminal sur la machine Debian et commencez par mettre à jour les paquets (le préfixe sudo est nécessaire si vous n'utilisez pas le compte "root").
+
+sudo apt update
+Ensuite, installez le paquet xRDP qui est dans les dépôts par défaut :
+
+sudo apt install xrdp -y
+
+Suite à l'installation, on peut s'assurer que le service est bien démarré :
+
+sudo systemctl status xrdp
+
+Malheureusement, si l'on regarde le détail du statut, on constate qu'il y a une erreur.
+
+
+Nous devons ajouter l'utilisateur "xrdp", associé au serveur xRDP, au groupe ssl-cert de notre machine Debian. En fait, xRDP s'appuie sur le fichier "ssl-cert-snakeoil.key" pour la partie certificat de la connexion RDP, mais ce fichier est accessible uniquement aux membres du groupe "ssl-cert".
+
+sudo adduser xrdp ssl-cert
+
+Redémarrez le service xRDP :
+
+sudo systemctl restart xrdp
+Enfin, activez le démarrage automatique du service xRDP :
+
+sudo systemctl enable xrdp
+Notre serveur xRDP est prêt à l'emploi, passons à la configuration.
+
+_______________________________________________________________________
+
+la connection avec le nom d'utilsateur du domaine zentyal se en rdp avec remmina sous linux vers un autre linux vm:
+avoir remmina installé 
+les 2 pc sont en gnome 
+
+imperativement nous devons mettre dans remmina
+
+protocole RDP -- REMOTE DESKTOP PROTOCOL 
+ip du serveur 
+nom d'utilsateur: SKNLAB\hugo.barbosa (ou autre utilisateur)
+mot de passe 
+Domaine: laisser vide
+
+
+
+________________________________________________________________
+
+on linux mint 
+
+dans linux mint issues to ad login
+/etc/resolv.conf se mettait par default et aussi dans le dns se mettait par défault
+
+
+
+%SKNLAB\\domain^admins ALL=(ALL) ALL et la un reboot 
+
+et mint a  des domain admin dans le root group sudoers
+
+
+____________________________________________________--
+ 
 
