@@ -1,0 +1,88 @@
+Nous allons voir comment lister les logiciels installés sur notre machine ou notre serveur Debian.
+Mais surtout, nous allons voir comment il est possible d’utiliser cette liste pour réinstaller une nouvelle machine.
+Cette dernière étape est très intéressante si l’on souhaite déployer plusieurs “clones”.
+Lister les logiciels Debian
+
+Pour connaitre tous les logiciels installés sur notre Debian, une simple commande suffit.
+
+dpkg -l
+
+Cette commande retourne la liste des logiciels : nom, version, architecture, ainsi que la description.
+Cela permet d’avoir une liste lisible et claire.
+Pur info, dpkg est le logiciel fondamental sur lesquels s’appuient aussi bien apt-get et aptitude.
+Sauvegarder la liste des logiciels Debian
+
+Là où la liste devient intéressante, c’est que nous pouvons la réutiliser pour installer une nouvelle machine.
+
+Premier cas, nous avons une machine sur laquelle, avec le temps, nous avons installé des tas de logiciels et nous voulons installer une nouvelle machine à l’identique de la première.
+Plutôt que de rechercher tous les paquets un par un, nous allons tous les réinstaller automatiquement.
+
+Deuxième cas, et peut-être le plus intéressant, nous voulons déployer un ou plusieurs “clones” de notre machine.
+
+Donc première étape, sur notre machine de référence, on récupère la liste des logiciels avec la commande :
+
+dpkg --get-selections
+
+Vous voyez qu’à l’écran s’affiche la liste des logiciels dans un format différent de celui vu précédemment avec dpkg -l.
+C’est celle liste que nous allons placer dans un fichier pour pouvoir la réutiliser.
+Pour cela on utilise la commande :
+
+dpkg --get-selections > ma_liste.txt
+
+Vous pouvez remplacer le noms du fichier ma_liste.txt par n’importe quel nom et n’importe quelle extension.
+
+Nous avons maintenant un fichier avec tous les logiciels :
+
+# dpkg --get-selections > ma_liste.txt
+# l
+total 8,0K
+-rw-r--r-- 1 root root 4,7K mai    4 16:04 ma_liste.txt
+# head ma_liste.txt 
+adduser                        install
+apt                        install
+apt-utils                    install
+aptitude                    install
+aptitude-common                    install
+base-files                    install
+base-passwd                    install
+bash                        install
+bash-completion                    install
+bind9                        install
+#
+
+Il ne reste plus qu’à sauvegarder cette liste pour réutilisation ultérieure.
+Restaurer les logiciels Debian
+
+Maintenant que nous avons sauvegardé notre liste de logiciels, nous allons les déployer sur une autre machine.
+
+On se place sur la machine à réinstaller et on récupère notre liste.
+Il reste maintenant à la charger :
+
+dpkg --set-selections < ma_liste.txt
+
+Là, soit c’est bon, soit on a des messages d’erreurs du type :
+
+    dpkg : avertissement : paquet non présent dans la base de données à la ligne …
+
+Pas de panique, c’est qu’il manque le paquet “dselect”. Donc on l’installe :
+
+aptitude install dselect
+
+On lance ensuite dselect :
+
+dselect
+
+Là, le menu s’ouvre et on choisi l’option de “mise à jour” : [M]ise à j Mise à jour de l'information sur les paquets disponibles, si possible.
+Dselect va synchroniser sa base de données.
+
+Une fois l’opération terminée, on recharge la liste :
+
+dpkg --set-selections < ma_liste.txt
+
+Et cette fois-ci plus d’erreurs.
+Reste enfin à installer les logiciels sélectionnés avec la commande :
+
+apt-get dselect-upgrade
+
+Et voilà !
+La nouvelle nouvelle et l’ancienne machine ont la même liste de logiciels installés.
