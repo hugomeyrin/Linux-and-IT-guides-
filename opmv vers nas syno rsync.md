@@ -12,23 +12,23 @@ exemple de script
 
 \#partage
 
-rsync -avPzh –delete -e ssh root@valinor.realise.ch:/srv/samba/inubo/partage/ /srv/samba/inubo/partage/ > /srv/test/transfert-date +%Y-%m-%d-%H-%M.log 2>&1
+rsync -avPzh –delete -e ssh root@server.tuv.ch:/srv/samba/serve/partage/ /srv/samba/serve/partage/ > /srv/test/transfert-date +%Y-%m-%d-%H-%M.log 2>&1
 
 \#media
 
-rsync -avPzh –delete -e ssh root@valinor.realise.ch:/srv/media/ /srv/samba/inubo/media/ > /srv/test/transfert_media-date +%Y-%m-%d-%H-%M.log 2>&1
+rsync -avPzh –delete -e ssh root@server.tuv.ch:/srv/media/ /srv/samba/serve/media/ > /srv/test/transfert_media-date +%Y-%m-%d-%H-%M.log 2>&1
 
 \#archives
 
-rsync -avPzh –delete -e ssh root@valinor.realise.ch:/srv/archives/ /srv/samba/inubo/archives/ > /srv/test/transfert_archives-date +%Y-%m-%d-%H-%M.log 2>&1
+rsync -avPzh –delete -e ssh root@server.tuv.ch:/srv/archives/ /srv/samba/serve/archives/ > /srv/test/transfert_archives-date +%Y-%m-%d-%H-%M.log 2>&1
 
 \#applications
 
-rsync -avPzh –delete -e ssh root@valinor.realise.ch:/srv/applications/ /srv/samba/inubo/applications/ > /srv/test/transfert_applications-date +%Y-%m-%d-%H-%M.log 2>&1
+rsync -avPzh –delete -e ssh root@server.tuv.ch:/srv/applications/ /srv/samba/serve/applications/ > /srv/test/transfert_applications-date +%Y-%m-%d-%H-%M.log 2>&1
 
 \#home users
 
-rsync -avPzh –delete -e ssh root@valinor.realise.ch:/srv/home/users/ /srv/home/users/ > /srv/test/transfert_homeusers-date +%Y-%m-%d-%H-%M.log 2>&1
+rsync -avPzh –delete -e ssh root@server.tuv.ch:/srv/home/users/ /srv/home/users/ > /srv/test/transfert_homeusers-date +%Y-%m-%d-%H-%M.log 2>&1
 
 deuxième exemple 
 
@@ -42,7 +42,7 @@ executé par root
 
 13h du mat
 
-parametres de la tâche:
+parametres de la tâche: exemples seulement à adapter
 
 envoyer par mail 
 
