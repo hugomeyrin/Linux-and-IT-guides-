@@ -1,3 +1,20 @@
+
+MAIN 
+
+sudo aa-logprof
+
+sudo aa-enforce program
+
+
+
+
+
+
+
+
+
+
+
 AppArmor
 
 AppArmor is a Linux Security Module implementation of name-based mandatory access controls. AppArmor confines individual programs to a set
