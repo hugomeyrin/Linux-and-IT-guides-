@@ -1,0 +1,27 @@
+MOTHERBOARD Z97-A BIOS V3503
+
+LINUX ISSUES ON CSM MODE OVERRIDES CONFIGURATIONS to default 
+
+In know you've read this, but have you considered its possibilities?
+
+PK Management
+The Platform Key (PK) locks and secures the firmware from any permissible changes.
+The system verifies the PK before your system enters the OS.
+Delete PK
+This item allows you to delete the PK from your system. Once the PK is deleted,
+all the system’s Secure Boot keys will not be active.
+Configuration options: [Yes] [No]
+Load PK from File
+This item allows you to load the downloaded PK from a USB storage device.
+
+What you need to know for peace of mind is - what else if anything does the PK affect?
+If nothing, then why not download the PK to a stick just in case you ever need it, then kill it?
+
+Perhaps someone reading this can answer the question I underlined.
+
+It seems you can do the same with all the other security gizmos, read to the end of page 2-54
+
+On a quite different tack, I know that some members of this forum install LM and a bootloader partition to an external device and put that top of the boot priority list. Who needs grub when the only OS on the system boots without it?
+I could imagine that an OS on a USB stick would slow down certain operations, but how about an external SSD?
+Just trying to think outside the box to help you get a return on the investment in your new machine. Again, perhaps someone here could give you the benefit of their experience in this regard.
+Top
