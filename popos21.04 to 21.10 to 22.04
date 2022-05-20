@@ -24,3 +24,6 @@ Comments and Conclusion
 In the tutorial, you have upgraded your existing Pop!_OS 20.04 LTS or minor release Pop!_OS 21.10 to Pop!_OS 22.04 LTS release, which features GNOME 42.
 
 Pop!_OS system requirements mandate a 64-bit processor, plus a minimum of 4GB RAM and 16GB storage. It is designed to use on modern desktops and involves more gaming or high-end application graphical work than a minor resource-light operating system. Overall, this release has stepped the game up again from the team, it is one of the best Ubuntu clones out currently, and the future looks bright compared to some other distributions such as Elementary OS.
+
+
+go to parametres --os upgrade and recovery do upgrade version and the terminal upgrade will continue
