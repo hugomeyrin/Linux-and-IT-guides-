@@ -1,0 +1,92 @@
+
+How to Fix “No Space Left on Device” Error on Linux
+Linux Shell TipsMay 24, 2022 Categories Linux Commandline Tips Leave a comment
+
+https://www.linuxshelltips.com/fix-no-space-left-on-device-error-linux/
+
+
+One of the primary reasons why most users resort to Linux as their primary operating system is how specific it is with its error messages. Whether you are running an installation command for an application package or trying to configure something on the operating system environment, computing errors are bound to occur. Using a Linux OS ensures that you will always be pointed to a fixable cause of such errors.
+
+However, not all errors are straightforward. Some require a bit of technical expertise in order to solve them. This article will walk us through the “no space left on device” error and also evaluate possible solutions to fix it in Linux. We are bound to run into this error even if we are certain our Linux system has plenty of disk space left.
+Be Certain of the Space Left on the Device
+
+While the Linux GUI environments like GNOME and KDE might reliably help us determine and confirm the amount of free space on our device, using the command-line environment makes things faster and more precise.
+Firstly, Use the Linux df Command
+
+The df command is part of the GNU Coreutils package and primarily outputs an estimate/summary report of the Linux system’s disk space usage statistics.
+
+Its reference syntax is as follows:
+
+$ df [OPTION]... [FILE]...
+
+In our case, its usage implementation will require us to run the command as a root user and also include the command options -h (make the output disk usage report human-readable).
+
+$ sudo df -h 
+
+List Linux Disk Space Usage
+List Linux Disk Space Usage
+
+If necessary, the df command needs to point to the base directory (under / directory) portraying disk space issues.
+
+$ sudo df -h /
+$ sudo df -h /home
+
+Check Linux Disk Space Usage
+Check Linux Disk Space Usage
+Secondly, Use the Linux du Command
+
+The du command is also part of the GNU Coreutils package and primarily estimates the Linux system’s file space usage. It has a similar syntax to the df command.
+
+We need to run it to compare its output to that of the df command.
+
+$ sudo du -sh /
+$ sudo du -sh /home
+
+List Linux File Disk Space Usage
+List Linux File-Disk Space Usage
+
+The usage report from the du command should not be far apart from the usage report from the df command. If you notice some discrepancies between the output of these two commands, then we can jump into some solutions.
+Solution 1: Processes Using Deleted Files
+
+When a process is still using a file and that file gets deleted by the user, the storage space associated with that file is not released by the operating system. A cure to this problem is to locate the vigilante process and restart it.
+
+$ sudo lsof / | grep deleted
+
+The lsof command lists all processes associated with deleted files in the base directory /.
+List Open Files in Linux
+List Open Files in Linux
+
+Perform a full daemon-reload to release the storage associated with the deleted files linked to the named processes.
+
+$ sudo systemctl daemon-reload
+
+Solution 2: Not Enough Inodes in Linux
+
+These filesystems’ metadata sets keep track of all the Linux files. The number of Inodes assigned to these filesystems is usually fixed. Check the Inodes with the following df command.
+
+$ sudo df -i / 
+
+List Linux Inodes
+List Linux Inodes
+
+The column for available Inodes (Ifree) should not be zero. If all the Inodes are used, then some out-of-date files need to be deleted from the base directory (Mounted on) associated with the file location (Filesystem).
+Solution 3: Bad Blocks in Linux
+
+Bad filesystem blocks are a result of corrupt filesystems that have become unattended over an extended period of time. Bad blocks can lead to dead hard drives which are still recognized by the OS as usable space.
+
+For the Linux OS to recognize these blocks as unusable, we will need to mark them as unusable via the fsck command for checking and repairing Linux filesystems.
+
+ 
+$ sudo fsck -vcck DEVICE_NAME
+
+check for DEVICE_NAME with the command:
+
+$ sudo fdisk -l
+
+Check Linux Device Name
+Check Linux Device Name
+
+If you mark bad blocks on the filesystem of the Linux OS you are currently using, boot into the Linux OS from a Live CD or bootable usb drive before executing the above fsck command.
+
+Hope these solutions help you get rid of the annoying no space left on device error on your Linux OS.
+Post navigation
