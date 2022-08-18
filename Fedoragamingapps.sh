@@ -2,6 +2,7 @@
 flatpak install fedora-testing org.fedoraproject.Platform/x86_64/f36
 flatpak install flathub net.davidotek.pupgui2
 sudo dnf install snapd
+sudo ln -s /var/lib/snapd/snap /snap
 echo "choose install gamer apps"
 echo "Chose version:
 1) lutris
