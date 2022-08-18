@@ -16,6 +16,7 @@ echo "Chose version:
 11) kde desktop
 12) system update
 13) Reboot after kde desktop  (mandatory)
+14) Backup
 -> "
 read option
 
@@ -71,6 +72,16 @@ sudo dnf update
 fi
 if [ "$option" == "13" ]; then
 sudo reboot
+fi
+if [ "$option" == "14" ]; then
+sudo dnf cache 
+sudo dnf install timeshift.x86_64
+fi
+if [ "$option" == "14" ]; then
+sudo dnf upgrade --refresh
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+printf "[vscode]\nname=packages.microsoft.com\nbaseurl=https://packages.microsoft.com/yumrepos/vscode/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc\nmetadata_expire=1h" | sudo tee -a /etc/yum.repos.d/vscode.repo
+sudo dnf install code -y
 fi
 echo "success"
 
