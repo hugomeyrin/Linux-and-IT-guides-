@@ -18,6 +18,7 @@ echo "Chose version:
 13) Reboot after kde desktop  (mandatory)
 14) Backup
 15) Visual Studio
+16) Telegram/Chrome/okular pdf reader / Heroic-Games-Launcher (epic games store)
 -> "
 read option
 
@@ -84,5 +85,11 @@ sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
 printf "[vscode]\nname=packages.microsoft.com\nbaseurl=https://packages.microsoft.com/yumrepos/vscode/\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc\nmetadata_expire=1h" | sudo tee -a /etc/yum.repos.d/vscode.repo
 sudo dnf install code -y
 sudo dnf update --refresh
+fi
+if [ "$option" == "16" ]; then
+sudo dnf install telegram -y
+sudo dnf install google-chrome-stable
+sudo dnf install okular -y
+flatpak install flathub com.heroicgameslauncher.hgl
 fi
 echo "success"
