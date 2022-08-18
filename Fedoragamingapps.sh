@@ -1,6 +1,7 @@
 #!/bin/bash
 flatpak install fedora-testing org.fedoraproject.Platform/x86_64/f36
 flatpak install flathub net.davidotek.pupgui2
+sudo dnf install snapd
 echo "choose install gamer apps"
 echo "Chose version:
 1) lutris
@@ -18,7 +19,7 @@ echo "Chose version:
 13) Reboot after kde desktop  (mandatory)
 14) Backup
 15) Visual Studio
-16) Telegram/Chrome/okular pdf reader / Heroic-Games-Launcher (epic games store)
+16) Telegram/Chrome/okular pdf reader / Heroic-Games-Launcher (epic games store)/ Firefox /flameshot (advanced screen shot)
 -> "
 read option
 
@@ -91,5 +92,7 @@ sudo dnf install telegram -y
 sudo dnf install google-chrome-stable
 sudo dnf install okular -y
 flatpak install flathub com.heroicgameslauncher.hgl
+flatpak install flathub org.mozilla.firefox 
+sudo snap install flameshot
 fi
 echo "success"
