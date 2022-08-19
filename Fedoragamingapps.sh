@@ -21,6 +21,7 @@ echo "Chose version:
 14) Backup
 15) Visual Studio
 16) Telegram/Chrome/okular pdf reader / Heroic-Games-Launcher (epic games store)/ Firefox /flameshot (advanced screen shot)
+17) Exit
 -> "
 read option
 
@@ -95,5 +96,8 @@ sudo dnf install okular -y
 flatpak install flathub com.heroicgameslauncher.hgl
 flatpak install flathub org.mozilla.firefox 
 sudo snap install flameshot
+fi
+if [ "$option" == "17" ]; then
+exit
 fi
 echo "success"
