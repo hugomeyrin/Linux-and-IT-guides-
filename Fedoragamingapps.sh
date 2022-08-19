@@ -22,6 +22,7 @@ echo "Chose version:
 15) Visual Studio
 16) Telegram/Chrome/okular pdf reader / Heroic-Games-Launcher (epic games store)/ Firefox /flameshot (advanced screen shot)
 17) Exit
+18) Printer Driver for HP
 -> "
 read option
 
@@ -99,5 +100,8 @@ sudo snap install flameshot
 fi
 if [ "$option" == "17" ]; then
 exit
+fi
+if [ "$option" == "18" ]; then
+sudo dnf install hplip
 fi
 echo "success"
