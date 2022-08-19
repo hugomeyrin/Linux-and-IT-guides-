@@ -14,7 +14,7 @@ echo "Chose version:
 7) nextcloud-client-sync
 8) teams
 9) Upgrade
-10) Snap et linux outlook client
+10) Snap support apps add and linux outlook client
 11) kde desktop
 12) system update
 13) Reboot after kde desktop  (mandatory)
