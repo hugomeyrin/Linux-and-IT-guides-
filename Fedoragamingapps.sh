@@ -22,7 +22,7 @@ echo "Chose version:
 15) Visual Studio
 16) Telegram/Chrome/okular pdf reader / Heroic-Games-Launcher (epic games store)/ Firefox /flameshot (advanced screen shot)
 17) Exit
-18) Printer Driver for HP
+18) Printer Driver HP's Models
 -> "
 read option
 
