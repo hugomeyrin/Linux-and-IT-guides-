@@ -123,3 +123,4 @@ if [ "$option" == "22" ]; then
 sudo dnf install kdeconnectd
 fi
 echo "success"
+
