@@ -23,9 +23,9 @@ echo "Chose version:
 16) Telegram/Chrome/okular pdf reader / Heroic-Games-Launcher (epic games store)/ Firefox /flameshot (advanced screen shot)
 17) Exit
 18) Printer Driver HP's Models
-19) Performance preload install
+19) Performance preload 
 20) Better fonts
-21) Dnf Dragora software install like fedora
+21) Dnf Dragora software like fedora
 22) KDE connect desktop and mobile control environement and plus
 -> "
 read option
@@ -112,14 +112,14 @@ if [ "$option" == "19" ]; then
 sudo dnf copr enable elxreno/preload -y && sudo dnf install preload -y
 fi
 if [ "$option" == "20" ]; then
-sudo dnf copr activer dawid/better_fonts -y
-sudo dnf installer fontconfig-font-replacements -y
+sudo dnf copr enable dawid/better_fonts -y
+sudo dnf install fontconfig-font-replacements -y
 sudo dnf install fontconfig-enhanced-defaults -y
 fi
 if [ "$option" == "21" ]; then
 sudo dnf install dnfdragora
 fi
 if [ "$option" == "22" ]; then
-sudo dnf install dnfdragora
+sudo dnf install kdeconnectd
 fi
 echo "success"
