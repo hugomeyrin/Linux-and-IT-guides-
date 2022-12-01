@@ -1,0 +1,6 @@
+sudo dnf copr enable jstaf/onedriver
+Enabling the COPR repository on the Fedora Linux command line
+
+And to install onedriver use dnf as usual:
+
+sudo dnf install onedriver
