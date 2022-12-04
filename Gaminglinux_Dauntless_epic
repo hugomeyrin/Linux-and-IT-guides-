@@ -1,3 +1,9 @@
+pre requirements:
+lutris
+wine
+vulkan 
+grapics card with dx9c, dx10,dx11 or dx12 capable
+
 on dautless game
 go to lutris open your epic games 
 check if wine is installed 
