@@ -1,0 +1,36 @@
+Tips and Tricks: Fixing VirtualBox Kali Linux Black Screen
+Posted on April 27, 2022 by admin
+Kali Linux Black Screen
+Hello friends and welcome to HaXeZ. So, you have run in to the VirtualBox Kali Linux Black Screen Bug? After all that effort spent downloading it and importing the appliance, you’re excited, you attempt to login in and… nothing. Just a black screen. How disappointing. Do you reinstall it? Give up? Or do you fix it and add that knowledge to your mind palace.
+
+The Cause Of The Black Screen
+The likely cause of this problem is due to the VirtualBox Guest Additions either not being installed or not being the correct version. Either way, we need to get them installed to rule this out as a problem.
+
+Kali Linux Black Screen
+Kali Linux Black Screen
+Grab A Shell
+Start the Virtual Machine and wait for it to get to the login prompt. Before logging in press your right CTRL key (VirtualBox host key) and your F2 key. If you ever need to do this natively on Linux then it will be left CTRL, ALT and F2. This sends a signal to the operating system to spawn a virtual text only terminal or a TTY. To get back to the Desktop environment you need to press left CTRL and F8.
+
+
+Install The Guest Additions
+Now login to the Operating System using your credentials. If it is a Kali Virtual Machine downloaded from their website then the credentials are likely either username: kali, password: kali or username: root, password: toor. Once you have logged in you need to instruct VirtualBox to mount the guest additions CD. From the menu, Devices > Insert Guest Additions CD Image.
+
+Kali Linux Black Screen - Insert Guest Additions CD
+Kali Linux Black Screen – Insert Guest Additions CD
+Mount The cdrom
+In order to access the content of the Guest Additions CD, you first need to mount it. You could create a mountpoint manually or you could run the following command. As you can see, the command is mounting the device ‘cdrom’ (denoted by the ‘/dev/’ directory) to ‘/media/cdrom’ directory.
+
+sudo mount /dev/cdrom /media/cdrom
+Now, if you list out the contents of the ‘/media/cdrom’ directory you should see a file called VBoxLinuxAdditions.run.
+
+Kali Linux Black Screen - Contents of cdrom
+Kali Linux Black Screen – Contents of cdrom
+Install The Guest Additions
+In order to install the Guest Additions you need to run that VBoxLinuxAdditions.run file. To do this simply run the following command.
+
+sudo /media/cdrom/VBoxLinuxAdditions.run
+You may be prompted to press enter but wait for the process to complete and then reboot your system with the reboot command.
+
+sudo reboot
+
+Kali Linux Black Screen – Install Linux Guest Additions
