@@ -1,0 +1,2 @@
+ sudo dnf install perl-IO-Compress
+zip -FF Corrupted.zip --out New.zip
