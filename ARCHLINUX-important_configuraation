@@ -1,3 +1,12 @@
+Archistall 
+archinstall 
+
+and the choose carefully your config 
+pacience can be very annoying to install 
+
+
+Printers Installation and configuration:
+
 sudo systemctl enable --now cups.service
 sudo systemctl enable --now cups.socket
 sudo systemctl enable --now cups.path
