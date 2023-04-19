@@ -1,0 +1,43 @@
+sudo systemctl enable --now cups.service
+sudo systemctl enable --now cups.socket
+sudo systemctl enable --now cups.path
+
+__________________________________________________________
+
+
+To install yay on your Arch desktop, first, download the following dependencies:
+
+sudo pacman -S --needed base-devel git
+Then, clone the yay repository using the git clone command:
+
+git clone https://aur.archlinux.org/yay.git
+Change your present working directory to the newly-downloaded yay folder using the cd command:
+
+cd yay
+Finally, use the makepkg command to build and install yay:
+
+makepkg -si
+If the above command throws the "cannot find the fakeroot binary" error, make sure you've successfully installed the base-devel package and then re-run the command.
+
+In addition to Arch Linux, this method works for other Arch-based distributions as well, including Manjaro, EndeavourOS, and Garuda Linux.
+
+Once done, verify the installation by checking the version of yay installed.
+
+yay --version
+If the output returns a version number, you have succeeded in installing yay.
+
+The AUR isn't originally built for use on Linux distros other than Arch Linux and its derivatives (like Ubuntu and Linux Mint). On such distributions, you can use Pacstall, an AUR-inspired package manager that provides pacscripts for installing software.
+
+How to Manage AUR Packages Using yay
+yay and Pacman commands have a lot in common. For example, to install a new package using Pacman or yay, you use the -S flag, whereas to remove one, you've to use the -R option.
+
+Now that you know the similarity between the two package managers, let's begin with package management on Arch Linux using yay.
+
+Searching for AUR Packages
+Like Pacman, yay allows users to search for packages prior to installing them. If you're unsure about the name of a particular package, you can use the yay command with the search term to find related packages.
+
+yay searchterm
+For example, to search for packages with "chrome" in their name:
+
+yay chrome
+
