@@ -1,0 +1,22 @@
+
+    Download and install LiLi on an other Windows machine (Linux Live USB Creator)
+    Start LiLi and have it download a lightweight ubuntu image. I chose Xubuntu.
+    Install the image to your USB stick.
+    Boot the problematic machine with the USB stick
+    When you see the ubuntu boot screen, press a key.
+    Under F6, set the following options: nomodeset, acpi=off, noacpi and nolacpi
+    Boot ubuntu.
+    Make a folder /media/windows and /media/mount.
+    Download and extract dislocker
+    sudo apt-get install libfuse-dev libmbedtls-dev
+    change directory to the dislocker/src folder
+    sudo make
+    sudo make install
+    change directory to /usr/bin
+    sudo fdisk -l
+    identify the partition which is bitlocked. Mine was /dev/sda1.
+    sudo dislocker -r -V /dev/sda1 -p315442-000000-000000-000000-000000-000000-000000-000000 -- /media/windows (replace your own bitlocker key and source partition)
+    change dir to /media/windows (use sudo -i if you can't access it)
+    mount -o loop dislocker-file /media/mount
+    You should now see your files in a mounted drive of the file manager.
+
