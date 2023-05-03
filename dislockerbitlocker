@@ -1,0 +1,13 @@
+df -h (identifay bitlocker partitions)
+cd /media
+sudo mkdir bitlocker
+sudo dislocker -v -V /dev/sdaX --recovery-password=bitlockerrecvpasswd -- /media/bitlocker/
+
+if is ok you see no output
+ls -lthr
+sudo ls bitlocker (will show bitlocker file)
+ ex:  dislocker-file
+sudo ~/disk
+sudo mount -o loop /media/bitlocker/dislocker-file /home/ubuntu/disk/
+or on read only
+sudo mount -o loop /media/bitlocker/dislocker-file /home/ubuntu/disk/ -r
