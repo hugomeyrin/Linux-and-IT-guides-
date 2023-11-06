@@ -1,0 +1,61 @@
+Test de RAID Open media vault
+
+-----------------------------------------------------------
+test de recuperation avec un life cd linux avec RAID 1
+_________________________________________________________
+sudo fdisk -l
+sudo apt install mdadm 
+sudo fdisk -l (pour voir le disque en raid)
+sudo mdadm --create /dev/md0 -l 1 -n 2 /dev/sdb missing
+dire yes
+sudo fdisk -l
+sudo mkdir /mnt/recup-raid
+sudo mount /dev/md0 /mnt/recup-raid
+
+
+
+___________________________________________________________
+ How To Rebuild and Resync From Failed Hard Drive Raid 5 on mdadm  DIRECTLY
+4 disks
+_________________________________________________________________________
+
+status raid
+sudo mdadm -D /dev/md0
+
+fail state (remove the drive and say faulty out of raid)
+still Raid working this is good 
+Very important!!!!!
+
+sudo mdadm --manage --set-faulty /dev/md0 /dev/sdc 
+
+detach the drive before add a new one
+Very important!!!!!!
+
+sudo mdadm --manage /dev/md0 -r /dev/sdc
+
+AND NOW WE CAN REPLACE THE FISICAL ONE, ONLY AFTER THIS !!!!!
+boot the omv should work the  data and transfert still but to 
+readd the new raid to the mdadm RAID:
+
+watch cat /proc/mdstat
+
+sudo mdadm --manage /dev/md0 -a /dev/sdc
+(mdadm readded status)
+
+
+
+
+
+
+____________________________________________________________
+option a tester FORCE VERSION PAS TESTÉ 
+------------------------------------------------------------
+
+
+mdadm --stop /dev/md127
+mdadm --assemble --verbose --force /dev/md127 /dev/sd[fdec]
+
+
+post output of: cat /proc/mdstat
+If that looks ok, then omv-mkconf mdadm
+
