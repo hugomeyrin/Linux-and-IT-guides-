@@ -17,6 +17,6 @@
     identify the partition which is bitlocked. Mine was /dev/sda1.
     sudo dislocker -r -V /dev/sda1 -p315442-000000-000000-000000-000000-000000-000000-000000 -- /media/windows (replace your own bitlocker key and source partition)
     change dir to /media/windows (use sudo -i if you can't access it)
-    mount -o loop dislocker-file /media/mount
+    mount -r -o loop dislocker-file /media/mount
     You should now see your files in a mounted drive of the file manager.
 
