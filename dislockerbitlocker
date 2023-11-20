@@ -1,8 +1,8 @@
 df -h (identifay bitlocker partitions)
+check with gparted to mount the bitlocker drive 
 cd /media
 sudo mkdir bitlocker
 sudo dislocker -v -V /dev/sdaX --recovery-password=bitlockerrecvpasswd -- /media/bitlocker/
-
 if is ok you see no output
 ls -lthr
 sudo ls bitlocker (will show bitlocker file)
