@@ -1,0 +1,1 @@
+sudo ddrescue -d -r 3 /dev/sda '/media/ubuntu/New volume/hddimage/drive.img' '/media/ubuntu/New volume/hddimage/drive.log'
