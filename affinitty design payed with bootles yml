@@ -1,0 +1,37 @@
+Olá, amigos, neste post eu falo como consegui fazer a instalação dos programas de design da Affinity no Linux. Esse tutorial não garante o sucesso ou que o programa funcionará sem nenhum problema, vale ressaltar que esse é um programa criado para outro sistema operacional, e o que é feito aqui é utilizar uma camada de tradução para rodar no sistema do pinguim.
+
+Tendo esses pontos apresentados, não recomendo o uso da ferramenta como principal para produção, por mais que nos meus testes rápidos teve um bom desempenho, ainda podem apresentar erros, bugs e até mesmo fechar, podendo corromper arquivos de projetos.
+
+No geral consegui instalar todos os programas da versão v1 do Affinity, sendo eles o Affinity Photo, Affinity Designer e Affinity Publisher. Consegui utilizar boas partes das features, como uso de objetos inteligentes para edição de mockup. Não cheguei a testar a suíte na versão v2.
+Passos para instalação:
+
+    Habilitar o suporte ao Flatpak 1 na sua distro;
+    Instalar o Bottles 2;
+    Instalar o Flatseal 11;
+    Vá em configurações > executores e instale a versão “Caffe 7.10”;
+    Faça o download da receita 9 de instalação;
+    Crie uma nova garrafa, coloque um nome, em ambiente selecione “Custom”, em executor selecione o “Caffe 7.10” e em “Configuração” selecione o arquivo da receita e depois clique em criar (esse processo costuma demorar);
+    Com a garrafa criada, abra ela e em “iniciar executável” selecione o arquivo .exe do programa, após isso basta fazer os passos de instalação como estivesse no Windows, no melhor estilo next > next > install.
+
+Uma configuração adicional foi habilitar o LatencyFlex, em prol de melhorar o tempo de resposta do programa. Para isso dentro da sua garrafa vá em configurações e no grupo sobre componentes habilite o LatencyFlex.
+Integrando apps do Bottles no Desktop
+
+Esse passo é bem simples, dentro da sua garrafa ao lado do botão de “play” para iniciar o programa, você vai encontrar o botão de opções representado por 3 pontos. Clicando nele selecione a opção “Adicionar entrada a área de trabalho”.
+
+Caso ao clicar você seja redirecionado a uma nova página da web, basta rodar esse comando no terminal:
+
+
+flatpak override com.usebottles.bottles --user --filesystem=xdg-data/applications
+
+A página em questão fala justamente sobre como resolver esse problema, apenas listei o comando para facilitar.
+Habilitando a visualização de pastas do sistema
+
+Diretórios e unidades montadas como ROOT podem não aparecer por padrão em aplicativo Windows instalados no Bottles, podemos corrigir isso usando o Flatseal. Com o Flatseal aberto procure pelo Bottles e no grupo “Filesystem” habilite a opção “Todos os arquivos do sistema”.
+Habilitando o suporte a objetos inteligentes para mockups
+
+Com o Affinity Photo aberto va no menu Editar > Preferências > Geral e habilite a opção “Importar objetos inteligentes PSD onde possível. No submenu desempenho no painel preferências, sugiro limitar o uso de memória RAM, no meu caso, deixei em 8gb.
+Observações:
+
+É importante ressaltar que o seu computador deve atender ao menos os requisitos mínimos do Affinity na versão V1. O computador utilizado conta com uma placa de vídeo nvidia gtx 1080 TI, 32gb de ram e processador AMD Ryzen 5 5600x, não fiz testes com computadores sem placa de vídeo, estou usando a distro Linux Xubuntu 22.04 LTS.
+
+Caso você utilize dual boot com o Windows e tenha compartilhado a sua HOME em uma unidade com o NFTS, o bottles pode encontrar problemas na hora da execução, falo sobre esse problema nesse Vídeo:
