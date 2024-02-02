@@ -1,0 +1,44 @@
+
+
+    Feb 1, 2020 
+
+    #2
+
+I think this is the right solution for replacing a healthy (old) hard drive,
+
+always have a look at the serialnummber(s)
+Code:
+
+ls -la /dev/disk/by-id
+
+Takes the specified device offline.
+Code:
+
+zpool offline rpool /dev/source
+
+shutdown install or replace the disk ( I have no hat-swap and no hot-spare)
+only create an empty GPT Partition Table on the new hdd with parted:
+Code:
+
+parted /dev/new-disk
+(parted)# print
+(parted)# mklabel GPT
+(parted)# Yes
+(parted)# q
+
+there are no additional partitions needed, and I found no reason for replicate the partitions form old disk to the new one.
+(afaik this is only needed for a disk in a ZFS-root pool, like descriped in the proxmox wiki)
+Only zpool replace is needed:
+Code:
+
+zpool replace rpool /dev/source /dev/target
+
+( in this case this command should also work without the source parameter)
+
+If you like to replace perhaps with a larger disk, than you have to set 'autoexpand on' at the first step:
+Code:
+
+root@server:~# zpool set autoexpand=on rpool
+
+
+regards,
