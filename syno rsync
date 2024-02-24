@@ -1,0 +1,209 @@
+ Configuration
+
+    Serveur NAS
+
+        Synology DS414 (x volumes)
+
+        DSM v.6.2.3
+
+    Client Linux
+
+        Kubuntu 18.04
+
+    LAN
+
+        RJ45 cat.7 / Wifi désactivé
+
+ 
+
+Préparation du NAS (serveur ssh et rsync)
+
+Compte « Admin » désactivé
+
+Compte utilisateur « Moi » activé en mode administrateur
+
+    Activer le service SSH :
+
+        Accéder à la page des paramètres du terminal sur votre périphérique Synology : DSM > Panneau de configuration > Terminal & SNMP > Terminal.
+
+            Cocher la case Activer le service SSH.
+
+            Spécifier un numéro de port pour les connexions SSH et enregistrer les paramètres. Certains préconisent (d'autres non) de remplacer le port 22 par défaut par un autre (ici 22222 pour l’exemple) afin de garantir une meilleure sécurité du système.
+
+    Activer le service rsync :
+
+        Accéder à la page des paramètres Services de fichier sur votre périphérique Synology : DSM > Panneau de configuration > Services de fichiers > rsync > Activer le service rsync
+
+        Dans la case « Port de chiffrement SSH », mettre le port spécifique que vous avez choisi précédemment. Attention, lorsque l’on clique sur « Activer le service rsync » et que le firewall du DSM est actif, ce dernier va créer des règles. Une fenêtre de notification apparaîtra à cet effet si vous avez validé l’option des notifications.
+        Vérifier que l’utilisateur a les permissions rsync : DSM > Panneau de configuration > Utilisateur > Le_nom_de_l’utilisateur (ici Moi) > Modifier > Applications> rsync (doit être coché)
+
+        Vérifier l’activation des ports dans le pare-feu du NAS :
+
+            Les ports rsync et « service terminal chiffré » (SSH) doivent être activés et le port SSH doit correspondre à celui choisi (par défaut 22, dans notre exemple 22222)
+            Attention comme indiqué précédemment, l’activation du service rsync a normalement créée automatiquement des règles pour autoriser rsync. Dans mon cas, j’avais au préalable autorisé les règles pour rsync et ssh dans le firewall dans un profil personnalisé. Aussi, l’ajout automatique des règles lors de l’activation du service rsync ne me semblait pas utile puisque en doublon avec ceux existant déjà dans mon profil. Bien que les règles rsync et ssh soient exactement les mêmes que les miennes (même port, même protocole), la suppression des règles automatiques rend impossible (« denied ») la communication entre le client et le serveur. Soit c’est un bug DSM, soit je merdoume de mon côté mais impossible de trouver ce qui cloche dans mon profil firewall...
+
+            Créer un dossier partagé de sauvegarde : DSM > Panneau de configuration > Dossier partagé > Créer
+
+                Donner un nom (ici « Synchronisation »), choisir un volume (ici "volume 1"), activer la corbeille
+
+                Donner les permissions « Lecture/Ecriture » pour votre profil (ici « Moi ») et interdire à tous les autres utilisateurs (« Pas d’accès »)
+
+ 
+
+Préparation du PC linux (client ssh, rsync et clés de cryptage)
+
+Le nom d'utilisateur du PC linux : krzyzstof
+
+    Par défaut rsync est installé sur tous les postes linux. Si tel n’était pas taper dans le terminal la commande :
+
+    sudo apt-get install rsync
+
+     
+
+    Par défaut ssh client est installé sur tous les postes linux. Si tel n’était pas taper dans le terminal la commande :
+
+    sudo apt-get install openssh-client
+
+     
+
+    Création des clés de cryptage
+
+        Taper dans le terminal :
+
+        ssh-keygen -t rsa -b 4096 -C "Clé ssh Moi"
+
+        où « rsa » correspond à l’algorithme de cryptage ; « 4096 » la force du cryptage ; « -C » permet d’insérer un commentaire (cet attribut et le commentaire sont optionnels, on peut donc écrire la ligne de commande sans cette partie).
+
+        Le terminal vous renseigne sur la création des clés public et privée. Il vous demande alors :
+
+            le dossier de destination où enregistrer les clés. Il vous propose un dossier par défaut (qu’il est conseillé de valider) du type : /home/moi/.ssh/id_rsa
+
+            une phrase de passe (équivalent d’un mot de passe) afin de chiffrer la clé privée. Il est conseillé d’en donner une pour une meilleure sécurité même en local. Si vous ne voulez pas en inscrire une alors validez la question par « ENTREE », sinon renseignez votre clé (et ne l’oubliez pas, elle vous sera redemandé pour les connexions). Dans ce tuto, les instructions qui suivent prennent en considération l’existence d’une phrase de passe.
+
+                La clé publique (id_rsa.pub) et la clé privée (id_rsa) se trouve donc dans le dossier dit caché : /home/votre_profil/.ssh
+
+    Envoi de la clé publique sur le NAS (serveur ssh)
+
+        Ouvrir le terminal dans le dossier contenant la clé public et privée, soit dans /home/votre_profil/.ssh/
+
+        Taper dans le terminal la commande de type :
+
+        ssh-copy-id -i id_rsa.pub votre_utilisateur_NAS@IP_local_NAS -p port_spécifique_ssh
+
+        soit dans notre exemple fictif :
+
+        ssh-copy-id -i id_rsa.pub Moi@192.168.1.100 -p 22222
+
+         
+
+        A la demande de mot de passe, donner le mot de passe de votre compte utilisateur NAS (et non de la phrase de passe de la clé de cryptage privée).
+
+        Avec son navigateur internet, se connecter au DSM et vérifier que dans le dossier du compte utilisateur (ici Moi), le dossier « .ssh/ » et le fichier « authorized_keys » ont été créés. Vérifier le contenu du ficher « .ssh/authorized_keys »
+
+        Revenir sur le Terminal Linux et faire un test de connexions en ssh crypté en tapant la commande de type :
+
+        ssh votre_utilisateur_NAS@IP_local_NAS -p port_spécifique_ssh
+
+         soit dans notre exemple fictif :
+
+        ssh Moi@192.168.1.100 -p 22222
+
+         
+
+        Donner cette fois la phrase de passe de votre clé de cryptage privée.
+
+        Vous êtes connecté si vous n’avez pas de message d’erreur* et que vous avez l’invite commande de type :
+
+        votre_utilisateur_NAS@Nom_du_NAS:~$ 
+
+        soit dans notre exemple :
+
+        Moi@DS414:~$
+
+            * si vous avez le message : « Connection closed by 192.168.1.100 port 22222 », c’est qu'il y a de fortes chances que vous avez été trop long à rentrer votre phrase de passe 😜
+
+        Pour se déloguer taper dans le terminal :
+
+        exit
+
+         
+
+Processus de synchronisation
+
+    modèle théorique en mode ssh :
+
+    rsync "-e ssh -p numéro_port_ssh" choix_des_attributs /home/mondossier_source user@ip_du_serveur:/dossier/destination/
+
+     
+
+    # ATTRIBUTS (en vert ceux retenus dans notre cas)
+
+        # -a : archive ⇒ préserve les dates, permissions, etc … des fichiers. Inclus l'option récursivité. Option à utiliser quand on veut transférer des répertoires entiers avec leurs sous-répertoires en préservant toutes les caractéristiques des fichiers. Equivalent aux attributs groupés de -rlptgoD
+
+        # -D : préserve les périphériques
+
+        # -e ssh -p numéro_port_ssh : utilise le protocole SSH avec un port ssh spécifique (si le port par défaut 22 a été configuré dans le serveur ssh, alors "-p numéro_port_ssh" est inutile. Si un port spécifique a été choisi, il faut alors mettre l'attribut -e ssh -p numéro_port_ssh entre guillemet, soit : "-e ssh -p numéro_port_ssh". Je suppose que cela doit être pour ne pas confondre avec l'attribut -p ci-dessous)
+
+        # -g : préserve le groupe
+
+        # -h : les chiffres produits sont dans un format de lecture lisible par les humains.
+
+        # -l : copie les liens symboliques comme liens symboliques. Est inclus dans l'option -a
+
+        # -L : remplace les liens symboliques par les fichiers référencés.
+
+        # -n : simule la sauvegarde mais n'effectue aucune opération concrète de sauvegarde. Très intéressant pour simuler et vérifier les éventuelles erreurs.
+
+        # -o : mettre le propriétaire du fichier de destination identique à celui du fichier source
+
+        # -p : provoque la mise à jour des permissions sur la destination pour qu'elles soient identiques aux permissions sur la source
+
+        # -q : n'affiche que les lignes d'erreur lors du transfert. Ainsi si notre synchronisation nous retourne des erreurs de transfert à la fin du processus, le fait de rajouter -q et de relancer le backup permet d'afficher les seuls lignes de contrôle concernant les erreurs
+
+        # -r : la synchro est récursive (elle prend les sous-répertoires). Est inclus dans l'option -a
+
+        # -t : préserve les dates
+
+        # -v : verbeux (affichage de ce que fait la commande pendant qu'elle le fait).
+
+        # -z : compresse les fichiers (Limite la bande passante mais augmente l'utilisation processeur et le temps de transfert : inutile en réseau local ou avec très bon débit)
+
+        # --del : permet de supprimer les fichiers sur "destination" qui n'existent plus sur "source"
+
+        # --delete : --delete : efface avant le transfert les fichiers qui n'existent pas sur la source.
+
+        # --delete-after : à la fin du transfert, supprime les fichiers dans le dossier de destination ne se trouvant pas dans le dossier source.
+
+        # --delete-excluded : si l’on a choisi des fichiers à exclure du transfert et qu’ils sont déjà présents dans le dossier de destination, ils seront effacés de la destination.
+
+        # --exclude="nom_de_dossier" (exclure des fichiers ou dossiers de la sauvegarde : rsync --exclude="nom_de_dossier" --exclude="- autre_nom_de_dossier" source/ destination/)
+
+        # --force : force la suppression de répertoires même non-vides
+
+        # --ignore-errors : efface même s'il y a eu des erreurs E/S (IO error)
+
+        # --progress : montre l'avancement pendant le transfert à la différence de -v
+
+        # --stats : affiche quelques statistiques de transfert de fichiers, ce qui permet de vérifier l'efficacité de la sauvegarde
+
+         
+
+    Notre synchro en mode simulation :
+
+    rsync "-e ssh -p 22222" -h --progress --stats -an --update --delete-after --delete-excluded --ignore-errors --exclude=**/*tmp*/ --exclude=**/*cache*/ --exclude=**/*Cache*/ --exclude=**~ --exclude=/mnt/*/** --exclude=/media/*/** --exclude=**/lost+found*/ --exclude=/var/run/** --exclude=/run/** --exclude=/proc/** --exclude=/dev/** --exclude=/sys/** --exclude=**/*Trash*/ --exclude=**/*trash*/ --exclude=/krzyzstof/test/** --exclude=/krzyzstof/.local/share/baloo/** /home/krzyzstof Moi@192.168.1.100:/volume1/Synchronisation
+
+        Pour info, les attributs et les exclusions correspondent à mes choix et à ma configuration, chacun est libre de modifier les paramètres et les dossiers. Ici par exemple le dossier "baloo" contient l'indexation par Linux KDE de tous mes documents sur mon PC. C'est très très lourd en termes de Go et inutile à synchroniser.
+
+        Nous avons rajouter l’option « --ignore-errors » car le transfert nous retournait l’erreur « IO error encountered -- skipping file deletion » malgré le fait que les permissions de lecture/écriture était bien accordé à l’utilisateur pour le dossier de destination ainsi que toute son arborescence. Bref, impossible d’effacer les fichiers sur la destination lors de la synchronisation. C’est un problème qui revient souvent dans les sujets de forums. Je n’ai pas très bien compris les raisons mais l’option « --ignore-errors » a été pensé expressément pour pallier ce problème.
+
+    Notre synchro en mode réel
+
+    rsync "-e ssh -p 22222" -h --progress --stats -a --update --delete-after --delete-excluded --ignore-errors --exclude=**/*tmp*/ --exclude=**/*cache*/ --exclude=**/*Cache*/ --exclude=**~ --exclude=/mnt/*/** --exclude=/media/*/** --exclude=**/lost+found*/ --exclude=/var/run/** --exclude=/run/** --exclude=/proc/** --exclude=/dev/** --exclude=/sys/** --exclude=**/*Trash*/ --exclude=**/*trash*/ --exclude=/krzyzstof/test/** --exclude=/krzyzstof/.local/share/baloo/** /home/krzyzstof Moi@192.168.1.100:/volume1/Synchronisation
+
+     
+
+    Notre synchro en mode réel avec l'affichage des seuls lignes de contrôle comportant des erreurs de transfert
+
+    rsync "-e ssh -p 22222" -h -q --progress --stats -a --update --delete-after --delete-excluded --ignore-errors --exclude=**/*tmp*/ --exclude=**/*cache*/ --exclude=**/*Cache*/ --exclude=**~ --exclude=/mnt/*/** --exclude=/media/*/** --exclude=**/lost+found*/ --exclude=/var/run/** --exclude=/run/** --exclude=/proc/** --exclude=/dev/** --exclude=/sys/** --exclude=**/*Trash*/ --exclude=**/*trash*/ --exclude=/krzyzstof/NAS_DS414/** --exclude=/krzyzstof/.local/share/baloo/** /home/krzyzstof Moi@192.168.1.100:/volume1/Synchronisation
+
+     
