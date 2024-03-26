@@ -1,0 +1,23 @@
+
+burn a live usb ubuntu and then boot from it (to extend the volume)
+
+
+ou can shrink/extend a logical volume very easily with a GUI tool: system-config-lvm. Because system-config-lvm does not come pre-installed, once booted from a live-cd, you have to install it:
+
+sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
+sudo apt-get update
+sudo apt-get install system-config-lvm
+Once it is installed, run the program, select the logical volume you want to change in the left panel, click 'Edit Properties'.
+
+Main Logical Volume Management program GUI
+
+Now change the parameters as you wish!
+
+Edit Logical Volume window
+
+One good thing about system-config-lvm is that it won't allow you to go ahead if the new partition size is smaller than all your existing data combined (I've just tried this and seen for myself).
+
+References:
+
+How-To Geek tutorial (this is the origin of the images).
+Red Hat's complete guide for the program.
