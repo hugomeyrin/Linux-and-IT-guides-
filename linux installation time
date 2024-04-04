@@ -1,0 +1,2 @@
+root@debian:/home/hugo# tune2fs -l /dev/sda2 | grep 'Filesystem created:'
+Filesystem created:       Sun Sep 17 00:12:44 2023
