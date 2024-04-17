@@ -1,0 +1,152 @@
+
+Recuperando discos y datos bajo Bitlocker
+CiberSeguridad
+• 15 de dic. de 2023
+Un equipo con Bitlocker falla y no inicia
+
+El boot de un equipo con Windows que use bitlocker puede fallar y dejar inaccesible el equipo y sus datos.
+
+Causas que lo pueden provocar:
+
+Módulo TPM (Módulo de plataforma segura) averiado o se actualizó el firmware del dispositivo TPAM, o se ha modificado alguna configuración de las BIOS o simplemente no se puede acceder al dispositivo TPAM de arranque para obtener las claves de descifrado de los discos.
+Cualquiera de las causas impiden acceder al disco que está cifrado y por lo tanto no se puede acceder a los datos que pueda contener ese equipo con Windows.
+
+    Nota: Alguna veces simplemente el uso de un conmutador KVM pude provocar el error de Bitlocker. Prueba a desconectar cualquier dispositivo externo conectado y reiniciar.
+
+Peligros de la "recuperación" recomendada
+
+Puede ser que un intento forzado de recuperación desde un disco de instalación de Windows y el proceso de "reparación" recomendado arruine definitivamento los datos del equipo con fallos de Bitlocker.
+
+    Cualquier proceso que realice cambios (escrituras) sobre el disco cifrado puede corromper la unidad cifrada y los datos contenidos en ella.
+
+Si tus datos son muy importantes y no quieres jugartela lo más recomendable es siempre acudir a alguna empresa especializada en recuperación de datos con experiencia demostrada, como por ejemplo:
+Recuperación de Datos - Líder en recuperar datos en España - RecuperaData
+Laboratorio líder en recuperar datos de discos duros y todo tipo de soportes informáticos. Damos servicio a toda España. Llame ahora al 944 467 254
+RecuperaDataRecuperaData
+https://www.recuperadata.com/
+Linux al Rescate
+
+Si decides recuperar por tu cuenta los datos del dispositivo cifrado, ten en cuenta que será bajo tu propio riesgo y responsabilidad y hasta que no arregles el problema que causa el fallo del módulo TPM, bajo ningún concepto debes escribir en ese disco.
+Lo aquí indicado es tan sólo un procedimiento para que puedas recuperar los datos importantes del disco cifrado al que no puedes acceder, no un procedimiento para solventar el problema de TPM.
+Qué vas a necesitar para recuperar tus datos
+
+    Unidad externa (USB/SSD externo). Con suficiente capacidad para copiar en ella los datos que quieras recuperar.
+    USB Live con distribución Linux. Recomiendo la última versión de Debian 12, que tiene posibilidad de inicio en modo Live.
+
+Vamos a usar la última imagen de Debian GNU/Linux (Debian 12 -bookworm-) ya que es muy fácil instalar en ella en el modo LIVE la paquetería necesaria para descifrar y montar la unidad cifrado por Bitlocker.
+
+Localiza la versión Live de Debian 12 con el escritorio gráfico con el que te sientas más comodo:
+Index of /debian-cd/current-live/amd64/iso-hybrid
+Versiones LIVE de Debian 12 con distintos escritorios gráficos
+
+Trasfiere la imagen ISO descargada a un USB bootable.
+Si no sabes como hacerlo, puedes ver varias opciones de cómo realizarlo en el siguiente artículo:
+Debian-Newbie 01. Comprobaciones previas
+Artículos de la serie ‘Debian-Newbie’ Enhorabuena si has decidido dar el paso y pasarte a GNU/Linux y en concreto a Debian. Has escogido un Sistema Operativo robusto y una de las mejores distribuciones y más estables de Linux. Si eres un novato (newbie) con Linux, he creado en el
+Solo Con LinuxLuis GuLo
+
+Inicia el equipo con el USB Live y luego abre un Terminal para instalar el software necesario desde la consola:
+
+# Actualizamos datos de paquetes disponibles en el repositorio
+sudo apt -y update
+# Instalamos dislocker (el Bilocker para Linux)
+sudo apt -y install dislocker
+
+Si quieres saber el estado del dispositivo cifrado con Bitlocker, te recomiendo ademas instalar el programa bdeinfo.
+
+Nota: En Debian, para averiguar que paquete es el que tienes que instalar para disponer de un programa, puedes usar el comando dpkg -S <programa>
+
+# Averiguamos que paquete Debian contiene bdeinfo
+dpkg -S bdeinfo
+  libbde-utils: /usr/bin/bdeinfo
+ libbde-utils: /usr/share/man/man1/bdeinfo.1.gz
+
+dpkg -S programa (averiguar el paquete que contiene un programa)
+
+Instalamos bdeinfo, que nos permitirá obtener información sobre un dispositivo BDE (BitLocker Drive Encrypted):
+
+sudo apt -y install libbde-utils
+
+Montando el disco cifrado por Bitlocker
+
+Para localizar el dispositivo cifrado puedes usar cualquiera de estos dos comandos:
+
+sudo fdisk -l
+lsblk -f
+
+Además vamos a necesitar crear 2 directorios para realizar el proceso de descrifrado y montaje:
+
+sudo mkdir /media/disco-cifrado
+sudo mkdir /media/datos-disco
+
+Montamos el disco encriptado por Bitlocker (indicando la clave):
+
+# Montar dispositivo del disco BDE (ejemplo /dev/sdb1)
+sudo dislocker -v --read-only --volume /dev/sdb1 --user-password=ClaveBitLocker -- /media/disco-cifrado
+
+Con esto obtenemos un fichero (dislocker-file) que es el dispositivo desencriptado, para acceder a sus datos ahora debemos montarlo:
+
+# Montamos dislocker-file (disco desencriptado)
+sudo mount -o loop /media/disco-cifrado/dislocker-file /media/datos-disco
+
+Ahora podemos ya comprobar que podemos acceder a los datos del disco, simplemente podemos ejecutar:
+
+# Listamos y comprobamos que vemos datos del disco
+sudo ls -l /media/datos-disco/
+
+Salvando los datos
+
+Conecta tu dispositivo externo en que quieras salvar los datos de tu equipo y espera hasta que lo reconozca y monte automaticamente.
+
+Procede al copiado de los datos necesarios, puedes usar el comando cp (como root) o si prefieres hacerlo en modo gráfico inicia el navegador de ficheros mediante sudo.
+
+# Usar navegador de ficheros de Cinnamon
+sudo nemo
+
+# Usar navegador de ficheros de Mate
+sudo caja
+
+# Usar navegador de ficheros de Gnome
+sudo nautilus
+
+# Usar navegador de ficheros de LXDE
+sudo pcmanfm
+
+# Usar navegador de ficheros de KDE
+sudo dolphin
+
+El motivo de usar el gestor de ficheros como usuario root, es que tu usuario Live no va a tener todos los permisos necesarios para poder navegar en el disco montado y copiarlos al disco de salvaguarda.
+Desmontando el disco
+
+Una vez hayas salvado todos los datos necesarios, debes desmontar el disco correctamente para que los datos contenidos en el mismo no se vean alterados de ninguna forma.
+
+Para ello simplemente desmonta en el orden inverso al que lo montaste:
+
+# ¡¡¡ Desmontando Correctamente !!!
+sudo umount /media/datos-disco
+sudo umount /media/disco-cifrado
+
+Desmonta también el dispositivo externo en que recuperaste los datos del equipo. podrás hacerlo incluso desde el navegador de ficheros.
+
+Con los datos importantes recuperados, ya puedes apagar el equipo.
+El programa bdeinfo
+
+Puedes usar el programa bdeinfo para obtener información extra sobre el dispositivo encriptado:
+
+sudo bdeinfo -p ClaveBitlocker /dev/sdb1
+
+bdeinfo 20190102
+BitLocker Drive Encryption information:
+	Encryption method:		AES 128-bit
+	Volume identifier:		a421c8a23-5cb2-21a3-a4a5-c87ad65c0040
+	Creation time:			Nov 12, 2020 15:12:22.234956550 UTC
+	Description			:PC PRUEBA BDE 11/12/2020
+	Number of key protectors:	2
+
+Key protector 0:
+	Identifier:			356a6471-a5c4-3ea2-4c27-0a5b2e51003f
+	Type:				Password
+
+Key protector 1:
+	Identifier:			a43cca82-af2a-32a2-38b1-2abcacf8cd8b
+	Type:				Recovery password
