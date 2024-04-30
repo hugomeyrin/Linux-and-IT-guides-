@@ -1,0 +1,41 @@
+1 sudo apt install onedrive 
+
+2 (only for test, or you dont care from a foreing github) this github based custom onedrive terminal will generate a link 
+
+3 open with your webbrowser pas all the terminal link
+
+4 connect to your account on webbroswer 
+
+5 a blank page will appear
+
+6 the url key is the full adress from the webbrowser address bar
+
+7 paste on your terminal enter 
+
+8 you can close the webpage and the terminal also too 
+
+
+9 open a terminal again:
+10 touch onedrive.sh
+
+11 to edit the script with nano text editor 
+nano onedrive.sh
+
+
+12 create a bash script with the following content 
+#!bin/bash
+onedrive --synchronize   
+
+12 save the content ctrl+x 
+
+13 make this script executable
+chmod a+x onedrive.sh
+
+14 schedule automaticaly the sync (normal user not root (well worked with the normal user)
+crontab -e 
+
+15 crontab content (to execute the with the bash program the script onedrive.sh)
+* * * * * /usr/bin/sh /home/test/onedrive.sh
+
+16 create something inside the folder onedrive or move and wait for 1 minute more or less and then connect to your onedrive webpage account 
+and refresh it to see if the updates from your desktop worked
