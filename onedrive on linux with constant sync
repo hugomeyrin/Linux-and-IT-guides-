@@ -16,6 +16,8 @@
 
 
 9 open a terminal again:
+onedrive -synchronize (to sync the first time ), you don't need this if all bellow is doing auto but for a first time to launch it is not bad
+
 10 touch onedrive.sh
 
 11 to edit the script with nano text editor 
