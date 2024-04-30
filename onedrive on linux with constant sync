@@ -17,6 +17,8 @@
 
 9 open a terminal again:
 onedrive -synchronize (to sync the first time ), you don't need this if all bellow is doing auto but for a first time to launch it is not bad
+       9 a) onedrive --help will show all the possible commands just for info)
+    
 
 10 touch onedrive.sh
 
