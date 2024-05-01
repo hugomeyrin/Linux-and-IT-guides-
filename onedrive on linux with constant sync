@@ -39,11 +39,14 @@ onedrive -synchronize (to sync the first time ), you don't need this if all bell
 10 to create a file on linux terminal we use touch command, in this case is .sh because is a bash script extension the needed that linux understands. 
 touch onedrive.sh
 
-11 to edit the script with nano text editor 
-nano onedrive.sh
-          11 a) if you dont have nano text editor install 
+
+11 extra step - IF you dont have nano text editor installed  
                 sudo apt install nano 
 
+
+11 to edit the script with nano text editor 
+nano onedrive.sh
+          
 12 create a bash script with the following content 
 #!bin/bash
 onedrive --synchronize   
