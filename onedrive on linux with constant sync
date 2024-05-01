@@ -10,6 +10,7 @@ write the following after each command hit enter!
 
 
 1 sudo apt install onedrive 
+     (hit enter after writting this command) 
 
 2 (only for test, or you dont care from a foreing github) this github based custom onedrive terminal will generate a link 
  example : https://huqoqIHBQFIJQFBWAFFAWFAWFKFBAWFF209334902903420329049918181248 (FAKE LINK)
@@ -25,7 +26,7 @@ hit connect
 6 the url key (step 3)is the full adress from the webbrowser address bar
 https://onedrive.live.com/?id=sdasdqaqwqqqwe (this is only an example is a fake link paste your own webbrowser generated link)
 
-7 paste on your terminal enter 
+7 paste on your terminal and hit enter 
 
 8 you can close the webpage and the terminal also too 
 
