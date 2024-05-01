@@ -36,7 +36,8 @@ onedrive -synchronize (to sync the first time ), you don't need this if all bell
        9 a) onedrive --help will show all the possible commands just for info)
     
 
-10 touch onedrive.sh
+10 to create a file on linux terminal we use touch command, in this case is .sh because is a bash script extension the needed that linux understands. 
+touch onedrive.sh
 
 11 to edit the script with nano text editor 
 nano onedrive.sh
