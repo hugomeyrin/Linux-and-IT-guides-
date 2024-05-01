@@ -41,7 +41,8 @@ touch onedrive.sh
 
 11 to edit the script with nano text editor 
 nano onedrive.sh
-
+          11 a) if you dont have nano text editor install 
+                sudo apt install nano 
 
 12 create a bash script with the following content 
 #!bin/bash
