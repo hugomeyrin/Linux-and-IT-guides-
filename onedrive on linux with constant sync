@@ -13,13 +13,13 @@ write the following after each command hit enter!
 2 (only for test, or you dont care from a foreing github) this github based custom onedrive terminal will generate a link 
 
 3 open with your webbrowser copy and paste the full webbrowser link generated on your terminal.
-
+ 
 4 connect to your account on webbroswer 
 
-5 a blank page will appear
+5 a blank webpage will appear
 
-6 the url key is the full adress from the webbrowser address bar
-
+6 the url key (step 3)is the full adress from the webbrowser address bar
+https://onedrive.live.com/?id=sdasdqaqwqqqwe (this is only an example is a fake link paste your own webbrowser generated link)
 7 paste on your terminal enter 
 
 8 you can close the webpage and the terminal also too 
