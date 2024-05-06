@@ -5,7 +5,7 @@ ubuntu
 din't  tested on fedora arch or other but ....
 example:
 
-open the terminal app on your laucher or ctr+alt+t to open a terminal in linux
+0 -- open the terminal app on your laucher or ctr+alt+t to open a terminal in linux
 write the following after each command hit enter!
 
 
@@ -66,5 +66,7 @@ crontab -e
 
 hit ctrl+o to save the modifications and ctr+x to exit this terminal crontab window
 
-16 create something inside the folder onedrive or move and wait for 1 minute more or less and then connect to your onedrive webpage account 
+16 Close your terminal 
+
+17 create something inside the folder onedrive or move and wait for 1 minute more or less and then connect to your onedrive webpage account 
 and refresh it to see if the updates from your desktop worked
