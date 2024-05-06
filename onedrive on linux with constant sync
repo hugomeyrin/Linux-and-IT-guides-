@@ -52,7 +52,7 @@ nano onedrive.sh
 onedrive --synchronize   
 
 12 save the content 
-hit ctrl+o to save the modifications and ctr+x to exit this terminal crontab window
+hit ctrl+o to save the modifications and ctr+x to exit this terminal window
 
 
 13 make this script executable
