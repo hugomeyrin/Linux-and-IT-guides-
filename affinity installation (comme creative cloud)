@@ -1,0 +1,37 @@
+Bonjour les amis, dans cet article, je raconte comment j'ai réussi à installer les programmes de conception Affinity sur Linux. Ce tutoriel ne garantit pas le succès ou que le programme fonctionnera sans aucun problème, il convient de mentionner qu'il s'agit d'un programme créé pour un autre système d'exploitation, et ce qui est fait ici est d'utiliser une couche de traduction pour s'exécuter sur le système pingouin.
+
+Avec ces points présentés, je ne recommande pas d'utiliser l'outil comme outil principal de production, même s'il a bien fonctionné lors de mes tests rapides, il peut toujours présenter des erreurs, des bugs et même fermer, corrompant potentiellement des fichiers de projet.
+
+De manière générale, j'ai pu installer tous les programmes de la version v1 d'Affinity, à savoir Affinity Photo, Affinity Designer et Affinity Publisher. J'ai pu utiliser de bonnes parties des fonctionnalités, telles que l'utilisation d'objets intelligents pour l'édition de maquettes. Je n'ai pas pu tester la suite en version v2.
+Étapes d'installation :
+
+     Activez la prise en charge de Flatpak 5 sur votre distribution ;
+     Installez les bouteilles 10 ;
+     Installez le joint plat 18 ;
+     Allez dans paramètres > exécuteurs et installez la version « Caffe 7.10 » ;
+     Téléchargez la recette d'installation 43 ;
+     Créez une nouvelle bouteille, donnez-lui un nom, dans l'environnement sélectionnez « Personnalisé », dans l'exécuteur sélectionnez « Caffe 7.10 » et dans « Configuration » sélectionnez le fichier de recette puis cliquez sur créer (ce processus prend généralement du temps) ;
+     Une fois la bouteille créée, ouvrez-la et dans « démarrer l'exécutable », sélectionnez le fichier .exe du programme, puis effectuez simplement les étapes d'installation comme vous l'étiez sous Windows, dans le meilleur style d'installation suivant > suivant >.
+
+Une configuration supplémentaire consistait à activer LatencyFlex, afin d'améliorer le temps de réponse du programme. Pour ce faire, à l'intérieur de votre bouteille, allez dans les paramètres et dans le groupe des composants, activez LatencyFlex.
+Intégration des applications Bottles sur le bureau
+
+Cette étape est très simple, à l'intérieur de votre bouteille, à côté du bouton « play » pour démarrer le programme, vous trouverez le bouton options représenté par 3 points. En cliquant dessus, sélectionnez l'option « Ajouter une entrée au bureau ».
+
+Si vous êtes redirigé vers une nouvelle page Web lorsque vous cliquez, exécutez simplement cette commande dans le terminal :
+
+
+flatpak remplace com.usebottles.bottles --user --filesystem=xdg-data/applications
+
+La page en question parle précisément de comment résoudre ce problème, je viens de lister la commande pour faciliter les choses.
+Activation de l'affichage des dossiers système
+
+Les répertoires et lecteurs montés en tant que ROOT peuvent ne pas apparaître par défaut dans les applications Windows installées sur Bottles, nous pouvons résoudre ce problème à l'aide de Flatseal. Avec Flatseal ouvert, recherchez Bottles et dans le groupe « Système de fichiers », activez l'option « Tous les fichiers système ».
+Activation de la prise en charge des objets intelligents pour les maquettes
+
+Avec Affinity Photo ouvert, accédez au menu Édition > Préférences > Général et activez l'option « Importer des objets intelligents PSD lorsque cela est possible ». Dans le sous-menu performances du panneau des préférences, je suggère de limiter l'utilisation de la RAM, dans mon cas, je l'ai laissée à 8 Go.
+Commentaires:
+
+Il est important de noter que votre ordinateur doit répondre au moins à la configuration minimale requise pour Affinity en version V1. L'ordinateur utilisé possède une carte vidéo nvidia gtx 1080 TI, 32 Go de RAM et un processeur AMD Ryzen 5 5600x. Je n'ai pas testé avec des ordinateurs sans carte vidéo, j'utilise la distribution Linux Xubuntu 22.04 LTS.
+
+Si vous utilisez le dual boot avec Windows et que vous avez partagé votre HOME sur un disque avec NFTS, les flacons peuvent rencontrer des problèmes lors de leur exécution, je parle de ce problème dans cette Vidéo :
