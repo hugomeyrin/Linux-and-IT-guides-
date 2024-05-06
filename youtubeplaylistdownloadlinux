@@ -1,0 +1,24 @@
+Sur Linux
+
+Vous pouvez installer yt-dlp soit en téléchargeant les binaires, soit avec pip, soit en utilisant un gestionnaire de paquets tiers. La méthode la plus simple et la plus répandue est d’utiliser les binaires.
+
+Cette méthode fonctionne avec tous les systèmes d’exploitation de type Unix, y compris Linux et macOS.
+
+    La commande wget suivante téléchargera la dernière version de yt-dlp, et la copiera dans votre chemin local :
+
+sudo wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
+
+    Maintenant, rendez-le exécutable à l’aide de la commande chmod :
+
+sudo chmod a+rx /usr/local/bin/yt-dlp
+
+    Il est conseillé d’installer ensuite FFmpeg en suivant ce guide : Comment installer FFmpeg sur Windows
+
+Comment télécharger des vidéos sur YouTube avec yt-dlp
+Utilisation basique
+
+yt-dlp <URL vidéo YouTube>
+
+Par exemple :
+
+yt-dlp https://www.youtube.com/watch?v=2zjwbTaiwNQ
