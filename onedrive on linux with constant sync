@@ -40,7 +40,7 @@ onedrive -synchronize (to sync the first time ), you don't need this if all bell
 touch onedrive.sh
 
 
-11 extra step - IF you dont have nano text editor installed  
+11 extra step - IF you dont have nano text editor installed, is up to to you to install and use another, but in case "how to install nano text editor"  
                 sudo apt install nano 
 
 
