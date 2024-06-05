@@ -1,0 +1,15 @@
+
+Re: dmesg filled with "evbug.c: Event. Dev: input5, Type: 0, Code: 0, Value: 0"
+
+    OK,
+
+    I'll answer to myself in case someone has the same issue.
+    I just blacklisted the evbug module.
+
+    Code:
+
+    ubuntu:~$ tail -n2 /etc/modprobe.d/blacklist.conf
+    #evbug
+    blacklist evbug
+
+test
