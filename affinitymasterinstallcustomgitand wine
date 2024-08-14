@@ -1,0 +1,164 @@
+https://codeberg.org/wanesty/affinity-wine-docs
+Installation and Usage Guide for Serif's Affinity Graphics Suite on Linux using ElementalWarrior's Wine fork.
+
+Originally posted on the Affinity forum,
+This repository exists due to the limitations of said forum, as I am unable to update the original guide i made there.
+
+This guide aims to provide step-by-step instructions for compiling Wine and running any Affinity software directly on your Linux pc.
+
+Affinity Publisher running on ArchLinux - all right reserved artwork This artwork was made entirely in Affinity Publisher and Photo, both running on my Linux desktop, which you can see the specs of in the running terminal thanks to neofetch
+Table of contents
+
+    Preamble
+    Compiling Wine
+    Setting up your build and your wineprefix
+    see also
+
+
+Preamble
+
+    Instead of installing Wine system-wide, we will be using "rum" to manage your Wine builds without interfering with the one packaged by your distribution.
+    why rum and how to use bottles instead is described in the Q&A
+
+    Affinity softwares version 1.10.4 and later releases require .winmd files from an existing Windows 10+ install.
+
+    $HOME/ may need to be replaced by your full home directory path /home/USERNAME/ in order to make it absolute.
+    this is a common issue with non-posix complient shells like nushell
+
+
+Dependencies
+
+To compile Wine, you will need to get the following build dependencies.
+
+The following is a simplified version of the dependencies listed in Wine's documentation.
+
+    Archlinux and Pacman distro:
+
+pacman -Syu alsa-lib alsa-plugins cups desktop-file-utils dosbox ffmpeg fontconfig freetype2 gcc-libs gettext giflib gnutls gst-plugins-base-libs gtk3 libgphoto2 libpcap libpulse libva libxcomposite libxcursor libxi libxinerama libxrandr mingw-w64-gcc opencl-headers opencl-icd-loader samba sane sdl2 v4l-utils vulkan-icd-loader wine-mono
+
+    Ubuntu, Debian and apt-get distro:
+
+apt install gcc-mingw-w64 gcc-multilib libasound2-dev libcups2-dev libdbus-1-dev libfontconfig-dev libfreetype-dev libgl-dev libgnutls28-dev libgphoto2-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libosmesa6-dev libpcap-dev libpulse-dev libsane-dev libsdl2-dev libudev-dev libunwind-dev libusb-1.0-0-dev libvulkan-dev libx11-dev libxcomposite-dev libxcursor-dev libxext-dev libxfixes-dev libxi-dev libxrandr-dev libxrender-dev ocl-icd-opencl-dev samba-dev
+
+    Fedora and DNF distro:
+
+dnf install alsa-lib-devel cups-devel dbus-libs fontconfig-devel freetype-devel glibc-devel.i686 gnutls-devel gstreamer1-devel gstreamer1-plugins-base-devel libgphoto2-devel libunwind-devel libusbx-devel libX11-devel libXcomposite-devel libXcursor-devel libXext-devel libXfixes-devel libXi-devel libXrandr-devel libXrender-devel mesa-libGL-devel mesa-libOSMesa-devel mingw32-gcc mingw64-gcc ocl-icd-devel samba-devel sane-backends-devel SDL2-devel vulkan-headers vulkan-loader vulkan-loader-devel
+
+You will also need Git, Winetricks and rum.
+
+Git and Winetricks are both available from your package manager under the same name.
+
+    To get rum you need to clone the repo:
+
+git clone https://gitlab.com/xkero/rum $HOME/Documents/rum
+
+    You will now need to copy the rum script to any $PATH= environment variables so it can be used easily, to know said env you can do:
+
+echo $PATH
+
+    Try to use one you know won't cause any problem, /usr/local/bin should be fine:
+
+cp $HOME/Documents/rum/rum /usr/local/bin/rum
+
+you might need to make it executable with chmod
+
+Compiling Wine
+
+Refer to the Official Documentation if you encounter any issue while building Wine.
+
+    cd into the directory of your liking and clone ElementalWarrior's fork:
+    for ease of writing we will use $HOME/Documents
+
+git clone https://gitlab.winehq.org/ElementalWarrior/wine.git ElementalWarrior-wine
+
+    cd into it and at this point you'll have the master branch of wine 8.3 with ElementalWarrior's fixes and implementations
+
+    However, you will want to switch to wine 9.13 with its fixes, in this case use git switch:
+
+git switch affinity-photo3-wine9.13-part3
+
+i will try to keep this up to date but watch the forum
+
+We will now build Wine using the new experimental wow64 implemented in 8.0 and improved since.
+If you encounter issues with this build method you can find the previous guide using the "Shared WoW64" method
+
+We will also specify an "install" --prefix=[PATH] so it doesn't install system-wide, as it would interfere with the Wine files distributed by your package manager.
+
+    First we will need to create two directories:
+
+mkdir winewow64-build/ wine-install/
+
+    Then we need to configure and compile wine:
+
+cd winewow64-build/
+
+../configure --prefix="$HOME/Documents/ElementalWarrior-wine/wine-install" --enable-archs=i386,x86_64
+
+    You can now compile it using make, we will also add --jobs, to utilise more cpu cores:
+    man make tells us:
+    "-j [jobs], --jobs[=jobs] Specifies the number of jobs (commands) to run simultaneously." You may set it to around (+/- 1) the number of threads your CPU have.
+
+make --jobs 4
+
+    Install it to the wine-install folder:
+
+make install
+
+
+Setting up your build and your wineprefix
+
+Refer to the "Wine User Guide documentation" for more information about using wine.
+
+    Since this guide uses rum we need to copy our build to /opt/wines/, rum's default directory:
+
+mkdir /opt/wines
+
+cp --recursive "$HOME/Documents/ElementalWarrior-wine/wine-install" "/opt/wines/affinity-photo3-wine9.13-part3"
+
+    This version of wine does not build a binary named wine64 and this can cause issues with winetricks. We will in consequence symlink the wine binary as wine64:
+
+ln -s /opt/wines/affinity-photo3-wine9.13-part3/bin/wine /opt/wines/affinity-photo3-wine9.13-part3/bin/wine64
+
+    Once done, you now need to use rum to create our WINEPREFIX$HOME/.wineAffinity and install the necessary dependencies:
+
+rum affinity-photo3-wine9.13-part3 $HOME/.wineAffinity wineboot --init
+
+rum affinity-photo3-wine9.13-part3 $HOME/.wineAffinity winetricks --unattended dotnet48 corefonts
+
+    Winetricks might set your prefix to win7 after installing dotnet, so you may need to set it back to win11 with:
+
+rum affinity-photo3-wine9.13-part3 $HOME/.wineAffinity wine winecfg -v win11
+
+    as mentioned in the preamble, you will need winmd files from a windows install if you wish to use a Affinity version newer than the 1.10.3
+    they are located in C:/windows/system32/WinMetadata and need to go in $HOME/.wineAffinity/drive_c/windows/system32/WinMetadata
+
+cp --recursive [WinMetadata folder path] "$HOME/.wineAffinity/drive_c/windows/system32/WinMetadata"
+
+    You can now run any Affinity installer .exe with rum:
+
+rum affinity-photo3-wine9.13-part3 $HOME/.wineAffinity wine [Path to the installer].exe
+
+    Once the desired Affinity software is installed, you can launch it with:
+
+rum affinity-photo3-wine9.13-part3 $HOME/.wineAffinity wine "$HOME/.wineAffinity/drive_c/Program Files/Affinity/Publisher 2/Publisher.exe"
+
+rum affinity-photo3-wine9.13-part3 $HOME/.wineAffinity wine "$HOME/.wineAffinity/drive_c/Program Files/Affinity/Designer 2/Designer.exe"
+
+rum affinity-photo3-wine9.13-part3 $HOME/.wineAffinity wine "$HOME/.wineAffinity/drive_c/Program Files/Affinity/Photo 2/Photo.exe"
+
+    See the tips and fixes below for QoL infos
+
+
+see also
+
+    This repo's Q&A
+    The Tips'n'Fixes file
+    Wine User's Guide
+    Wine Building Doc
+    rum's README.md for its syntax
+    The original forum topic
+
+Feel free to contribute to: this repository, to ElementalWarrior's implementations, or on the forum.
+You are welcome to open issues if you encounter bugs, so we can discuss them !
+Thanks to ElementalWarrior for his work on the Wine fork this guide uses
+Thanks to xkero for making rum
