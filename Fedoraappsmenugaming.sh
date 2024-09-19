@@ -27,6 +27,7 @@ echo "Chose version:
 20) Better fonts
 21) Dnf Dragora software like fedora
 22) KDE connect desktop and mobile control environement and plus
+23) EQUALISER install 
 -> "
 read option
 
@@ -121,6 +122,9 @@ sudo dnf install dnfdragora
 fi
 if [ "$option" == "22" ]; then
 sudo dnf install kdeconnectd
+fi
+if [ "$option" == "23" ]; then
+git clone --depth 1 https://github.com/JackHack96/EasyEffects-Presets && cd EasyEffects-Presets/ && ./install.sh
 fi
 echo "success"
 
