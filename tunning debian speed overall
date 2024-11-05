@@ -1,0 +1,121 @@
+Debian is the largest and most extensive Collaborative project in the world. The most important reason for the success of the Debian GNU/Linux project is that this distribution of Linux was written by more than 1000 programmers. In this article, we intend to provide information about Performance tuning and optimize Debian. You can visit the packages available in Eldernode if you need to purchase Linux VPS server.
+
+Table of Contents
+
+    Performance tuning and optimize Debian 10/9/8
+        How to install Tuned on Debian 10/9/8
+        How to Select a Tuning Profile on Debian
+            Power-saving profiles
+            Performance-boosting profiles
+        Tutorial select a Tuning Profile on Debian
+            Learn how to check the recommended tuning profile on Debian
+        Tutorial Turn off the tuning profile on Debian
+    Conclusion
+
+Performance tuning and optimize Debian 10/9/8
+
+The Debian GNU/Linux suite currently includes more than 50,000 software packages designed even for 8-processor architectures. By changing the source code of the Debian operating system and applying changes to it, more than 120 new types of Linux distributions have been released so far, all of them in the term Debian Based, which represents the power of this operating system. In this article, we intend to improve the performance of Debian distribution by applying a series of settings.
+Recommended Article: Tutorial Configure Redis on Linux Ubuntu 20.04
+How to install Tuned on Debian 10/9/8
+
+You can easily install and activate the tuned package in Debian using the following commands:
+
+sudo apt update    sudo apt install tuned tuned-utils tuned-utils-systemtap
+
+After using the above commands to install the tuned package in Debian, you must now enter the systemctl start tuned command to start. You can then view the following output using the $ systemctl status tuned command. In the second and third lines after the command you can check the activation status of the services:
+
+———————————————————————————————————–
+
+$ systemctl status tuned
+
+● tuned.service – Dynamic System Tuning Daemon
+Loaded: loaded (/usr/lib/systemd/system/tuned.service; enabled; vendor preset: enabled)
+Active: active (running) since Tue 2020-11-06 04:10:52 UTC; 6 days ago
+Docs: man:tuned(8)
+man:tuned.conf(5)
+man:tuned-adm(8)
+Main PID: 936 (tuned)
+CGroup: /system.slice/tuned.service
+└─936 /usr/bin/python2 -Es /usr/sbin/tuned -l -P
+…..
+
+———————————————————————————————————–
+How to Select a Tuning Profile on Debian
+
+Tuning Profiles are the base profiles which are mostly shipped in the base tuned package. They are targeted for various goals and provide performance optimizations but there are also profiles targeted to low power consumption, low latency, and others. Given that the discussion of profiles is very broad, we can briefly say that Tuned profiles are divided into two categories: Power-saving profiles and Performance-boosting profiles. In the following, we will explain each of them:
+Power-saving profiles
+
+Power-saving profiles contain energy settings that are not normally enabled by default compared to power-saving mechanisms that are enabled by default. Because they significantly affect the latency/performance of your system. Also, the performance profiles disable additional power-saving mechanisms in setting consumption. Because they have a negative impact on throughput or latency.
+Performance-boosting profiles
+
+Performance-boosting profiles include aspects that we will explain in the following:
+
+1. Latency-performance
+
+Profile for low latency performance tuning. Disables power-saving mechanisms. CPU governor is set to performance and locked to the low C states (by PM QoS). CPU energy performance bias to performance.
+
+2. Throughput-performance
+
+Profile for typical throughput performance tuning. Disables power saving mechanisms and enables sysctl settings that improve the throughput performance of your disk and network IO. CPU governor is set to performance and CPU energy performance bias is set to performance. Disk readahead values are increased.
+
+3. Virtual-host
+
+Profile optimized for virtual hosts based on throughput-performance profile. It additionally enables more aggressive writeback of dirty pages.
+
+4.Virtual machine-performance
+
+The tuned utility is a tuning profile delivery mechanism that adapts Debian for certain workload characteristics, such as requirements for CPU-intensive tasks or storage-network throughput responsiveness. It provides a number of tuning profiles that are pre-configured to enhance performance and reduce power consumption in a number of specific use cases. You can edit these profiles or create new profiles to create performance solutions tailored to your environment, including virtualized environments.
+Tutorial select a Tuning Profile on Debian
+
+You can change the tuned daemon settings using the tuned-adm command. You can check the active tuning profile using the following command:
+
+$ tuned-adm active  Current active profile: virtual-guest
+
+Also, as shown below, you can use the tuned-adm list command to list all available tuning profiles:
+
+Available profiles:
+
+- balanced                      - General non-specialized tuned profile
+
+- desktop                       - Optimize for the desktop use-case
+
+- latency-performance           - Optimize for deterministic performance at the cost of increased power consumption
+
+- network-latency               - Optimize for deterministic performance at the cost of increased power consumption, focused on low latency network performance
+
+- network-throughput            - Optimize for streaming network throughput, generally only necessary on older CPUs or 40G+ networks
+
+- powersave                     - Optimize for low power consumption
+
+- throughput-performance        - Broadly applicable tuning that provides excellent performance across a variety of common server workloads
+
+- virtual-guest                 - Optimize for running inside a virtual guest
+
+- virtual-host                  - Optimize for running KVM guests
+
+Current active profile: virtual-guest
+
+The following is an example to maximize throughput. It should be noted that using the tuned-adm profile command you can switch from one active profile to another active profile:
+
+sudo tuned-adm profile throughput-performance
+
+Learn how to check the recommended tuning profile on Debian
+
+Depending on the specifications of your system, a tuning profile based on the tuned-adm command may be recommended. These specifications can be recommended by this command based on whether the system is a virtual machine or so.
+
+$ tuned-adm recommend  virtual-guest
+
+It should be noted that you can also set your profile to the recommended value using the following command:
+
+sudo tuned-adm profile virtual-guest
+
+To see the profile and its details, run the following commands to see the result:
+
+$ tuned-adm profile_info virtual-guest    Profile name:  virtual-guest    Profile summary:  Optimize for running inside a virtual guest    Profile description:  
+
+Tutorial Turn off the tuning profile on Debian
+
+Sometimes you may have made changes but now you want to reverse those changes. There are two ways to do this, you can go to another profile or disable the tuned daemon. But to turn off tuned tuning activity and the settings you have made, you can use the following command:
+
+$ tuned-adm off
+
