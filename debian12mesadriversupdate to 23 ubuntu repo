@@ -1,0 +1,214 @@
+
+Ir directamente al contenido
+Buscar
+
+Salmorejo Geek
+
+Batiburrillo Digital
+
+    Twitter Youtube Twitch Telegram 
+
+    Inicio
+    Podcasts
+        Audio Momentos
+        Salmorejo Geek Podcast
+        Frecuencia Improvisada
+        Cosas de modernOS
+        Activando la Manzana
+        Ojú Daily
+        Killall Radio
+        Un Día Cualquiera
+    Donar
+    Salmorejo Geek
+        Condiciones de uso
+        Acerca de
+        Política de Privacidad y Cookies
+
+Busca
+Cómo tener la última versión de MESA en Debian 12 Bookworm (rama estable)
+
+Una de las partes mas importantes de nuestros sistema es MESA, la pila encargada de suministrar los controladores gráficos del espacio de usuario, OpenGL, Vulkan y OpenCL, por eso es aconsejable que esté siempre a la ultima.
+
+Si juegas en Linux, en este caso Debian 12 GNU/Linux, o necesitas buen soporte gráfico para cualquier otra cosa, tienes que estar a la última en MESA para garantizar que vas a tener lo mejor.
+
+Debian 12 ha sido lanzada con la versión 22.3.6 y es muy raro que actualice, ya conocéis la política de Debian en su rama estable. No obstante, gracias al PPA de kisak para MESA podemos estar a la última en este componente tan importante. Al momento de escribir este post la versión del PPA está en la 23.1.3.
+
+Agregar un PPA de Ubuntu a Debian es un proceso algo más tedioso pero no imposible. He elegido la versión de Ubuntu 22.04 Jammy evidentemente por ser compatible y por ser LTS, lo que garantiza actualizaciones por mucho tiempo, y estabilidad.
+
+Al lío que se va el tío.
+Agregamos el repositorio PPA
+
+Con nuestro editor favorito, para el ejemplo usaré geany, creamos el archivo en su correspondiente directorio.
+
+Los comandos que se verán en el tutorial los podemos ejecutar como root o con sudo si lo tenemos en nuestra Debian.
+1
+	
+sudo geany /etc/apt/sources.list.d/kisak-mesa.list
+
+En el archivo que se nos abre pegamos lo siguiente y guardamos cambios.
+1
+	
+deb https://ppa.launchpadcontent.net/kisak/kisak-mesa/ubuntu jammy main
+
+Ahora antes de actualizar debemos agregar la clave del repositorio o nos dará error.
+
+Todo ok.
+1
+	
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F63F0F2B90935439
+
+Lo siguiente es actualizar el sistema para refrescar el repositoiro, pero al hacerlo nos saldrá un mensaje de error. Es tan solo un mensaje que dice que la llave debe estar en /etc/apt/trusted.gpg.d/ en vez de en la raíz de /etc/apt/
+
+Lo que vamos a hacer es copiar la llave trusted.gpg de /etc/apt al directorio /etc/apt/trusted.gpg.d.
+1
+	
+sudo cp /etc/apt/trusted.gpg /etc/apt/trusted.gpg.d
+
+Una vez copiada ya le podemos tirar un update y podemos ver que se puede actualizar desde la 22.3.6 de repos de Debian 12 a la 23.1.3 del PPA de kisak.
+
+Así que comprobado este le tiramos lo siguiente:
+1
+2
+	
+sudo apt update
+sudo apt upgrade
+
+Si nos sale algún mensaje con una lista de cambios del algún paquete pulsamos q para salir del mensaje y seguimos con la actualización.
+
+Ahora reiniciamos y ya estaríamos a la última en MESA, a día de hoy la versión 23.1.3.
+
+Si mantenemos activado este repositorio en nuestra Debian siempre estaremos al día en las nuevas versiones de MESA que nos irán llegando según las vayan subiendo los mantenedores del PPA.
+
+Con este sistema podemos disfrutar de lo último de esta pila gráfica sin necesidad de llevar nuestra Debian a la rama testing o unstable. Espero que esto les sea de utilidad 🙂
+
+Os dejo el correspondiente vídeo dónde lo explico todo 😉
+
+Continuamos en línea…
+Comparte esto:
+
+    TwitterCorreo electrónicoPocketTumblrPinterestImprimirLinkedInRedditTelegramWhatsAppFacebook
+
+Relacionado
+Tener lo último de MESA en Debian 12 Bookworm y LMDE 6 vía Debian Backports (Noviembre 2024)
+29 octubre, 2024
+
+En «Debian»
+Cómo usar los repositorios de MX Linux 23 en Debian 12 para estar «algo» más actualizado
+2 julio, 2023
+
+En «Debian»
+Tener lo último de PipeWire en Debian 12 Bookworm y LMDE 6 Faye vía Debian Backports (Noviembre 2024)
+29 octubre, 2024
+
+En «Debian»
+Publicado por Yoyo	
+
+Andaluz, Asocial, Solitario, Cortijero, Cabrero, Ochentero, Tractorista, Podcaster, Youtuber. No me gusta la gente.
+Ver todas las entradas de Yoyo
+23 junio, 2023
+
+Debian, Howtos
+
+Debian, Howtos, MESA
+Navegación de entradas
+Habilitar swap sobre zRAM en Debian 12 y Ubuntu 22.04 y asignar el mejor algoritmo de compresión
+Cómo instalar PipeWire y WirePlumber en Ubuntu 22.04.x LTS Linux Mint 21.x y dejarlos por defecto (tutorial Julio 2023)
+
+Los comentarios están cerrados.
+
+Categorías
+Categorías
+Archivos
+Archivos
+
+Entradas recientes
+
+    Tener lo último de PipeWire en Debian 12 Bookworm y LMDE 6 Faye vía Debian Backports (Noviembre 2024)
+    Tener lo último de MESA en Debian 12 Bookworm y LMDE 6 vía Debian Backports (Noviembre 2024)
+    Cómo crear desde la Terminal un USB Install de macOS 15 Sequoia para instalaciones en limpio
+    Cómo crear desde la Terminal un USB Install de macOS 14 Sonoma para instalaciones en limpio
+    Cómo usar los repositorios de MX Linux 23 en Debian 12 para estar «algo» más actualizado
+    Cómo instalar PipeWire y WirePlumber en Ubuntu 22.04.x LTS Linux Mint 21.x y dejarlos por defecto (tutorial Julio 2023)
+    Cómo tener la última versión de MESA en Debian 12 Bookworm (rama estable)
+    Habilitar swap sobre zRAM en Debian 12 y Ubuntu 22.04 y asignar el mejor algoritmo de compresión
+
+Entradas y Páginas Populares
+
+    Poner el HGU de Movistar en modo bridge para conectar tu router neutro TP-Link Archer AX53 WiFi 6
+    Instalar YAY en Arch Linux desde una sola línea
+    Cómo eliminar por completo SNAP de Ubuntu 20.04 Focal Fossa
+    Instalar y poner por defecto Pipewire en Arch Linux, Manjaro y demás basadas
+    Streaming de audio y vídeo desde VLC para tu red local, o cómo mandar música desde el PC a tu teléfono móvil
+    Cómo agregar soporte Flatpak a Debian 11 Bullseye
+    Cómo instalar PipeWire y WirePlumber en Ubuntu 22.04.x LTS Linux Mint 21.x y dejarlos por defecto (tutorial Julio 2023)
+    Cómo aumentar, un poquito, el volumen de tu equipo con Windows 10
+
+Etiquetas
+Anarchy
+Android
+Antergos
+Apple
+Arch
+Artwork
+Audacity
+Audio
+Audio Momentos
+Blogs
+Cinnamon
+Debian
+Deepin
+Fedora
+Gnome
+GNU Linux
+Hardware
+Howtos
+Humor
+Internet
+iOS
+iPhone
+KaOS
+KDE
+KDE Plasma
+Killall Radio
+Linux
+Linux Mint
+Mac
+macOS
+Manjaro
+Música
+openSUSE
+Opinión
+Pipewire
+Plasma
+Podcasts
+Salmorejo Geek
+Salmorejo Geek Podcast
+SlimBook
+Software
+Software Libre
+Tecnología
+Telegram
+Trucos
+Ubuntu
+Vídeos
+Windows
+XFCE
+Youtube
+Sigue el blog por Email
+
+Introduce tu dirección de correo electrónico para seguir este Blog y recibir las notificaciones de las nuevas publicaciones en tu buzón de correo electrónico.
+
+Dirección de correo electrónico:
+
+Únete a otros 624 suscriptores
+Licencia del contenido
+
+licencia-cc-by-nc-sa
+
+    RSS - Entradas
+    RSS - Comentarios
+
+Blog de WordPress.com.
+
+Subir ↑
+Política de Privacidad y Cookies: Este sitio utiliza cookies de WordPress.com y partners afiliados. Más información en Privacidad y Cookies
