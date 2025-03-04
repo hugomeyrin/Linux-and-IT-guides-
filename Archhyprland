@@ -2,3 +2,13 @@ for the search bar to quit write exit + enter
 win+r = search bar
 win+q = terminal 
 win+e = file explorer
+
+
+waybar config 
+cd /etc/xdg/waybar
+config.jsonc
+
+To solve the icons waybar borked 
+sudo pacman -S ttf-jetbrains-mono-nerd 
+
+shutdown 0 = étendre le pc en terminal
