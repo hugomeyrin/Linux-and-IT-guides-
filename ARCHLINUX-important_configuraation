@@ -50,3 +50,20 @@ For example, to search for packages with "chrome" in their name:
 
 yay chrome
 
+after install also 
+sudo pacman -S gedit gpa mangohud bash-completion telegram-desktop discord wine wine-gecko wine-mono winetricks libreoffice-fresh libreoffice-fresh-pt-br firefox ntfs-3g git wget curl deluge-gtk vulkan-radeon libva-mesa-driver vulkan-icd-loader lib32-mesa lib32-vulkan-radeon lib32-vulkan-icd-loader lib32-libva-mesa-driver mesa-demos xorg-xdpyinfo amd-ucode mesa-utils glfw-wayland spectacle eog  dosfstools linux-lts-headers
+
+
+dica que mostrei no video
+
+sudo nano /etc/makepkg.conf
+ir até a linha #MAKEFLAGS="-j11"    e apagar a # e coloca o numero de núcleos do seu cpu. conforme video.
+
+Colocar o suporte ao aur
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+
+
+
+paru -S protonup-qt ventoy obs-studio-tytan652 obs-vkcapture winff  droidcam v4l2loopback-dc-dkms antimicrox google-chrome stremio celluloid mpv vlc conky-lua lua53 opencl-amd android-tools deckboard-bin r-linux lutris steam-native-runtime heroic-games-launcher-bin jamesdsp-pipewire-bin
