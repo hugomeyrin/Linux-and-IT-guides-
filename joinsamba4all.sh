@@ -83,7 +83,7 @@ function debian_ubuntu()
 		echo "Now Changing your DNS to 192.168.1.253, AD IP address"
 		# add DNS name server to my AD
 		# 192.168.1.253 is my AD IP, please replace it with your own information
-		echo "nameserver 192.168.1.253" >> /etc/resolvconf/resolv.conf.d/head
+		echo "nameserver 192.168.1.253" >> /etc/resolv.conf/resolv.conf.d/head
 		# Restart the resolvconf service.
 
 		service resolvconf restart
