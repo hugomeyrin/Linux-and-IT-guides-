@@ -1,0 +1,12 @@
+L’erreur « la synchronisation de toutes les bases de données a échoué (base de données non valide ou corrompue (signature PGP)) » 
+indique que Pacman ne parvient pas à vérifier l’authenticité des bases de données de paquets à cause d’un problème avec les signatures PGP.
+Ce problème est courant sur Manjaro (et Arch)
+et vient généralement d’un souci avec la clé d’authentification locale, une corruption partielle, ou de miroirs temporaires corrompus.
+
+Voici les solutions éprouvées pour corriger cette erreur :
+
+    Supprimer les bases de données corrompues et forcer la resynchronisation :
+
+bash
+sudo rm -r /var/lib/pacman/sync/
+sudo pacman -Syyu
