@@ -1,0 +1,87 @@
+Pour faire un backup complet du système avec Back In Time sous Linux, voici la démarche à suivre, adaptée à réaliser une sauvegarde système la plus complète possible, tout en tenant compte des spécificités techniques de l'outil :
+
+    Installation de Back In Time
+
+        Sur Ubuntu/Debian, installez-le via la commande :
+
+    bash
+    sudo apt install backintime-qt
+
+    Lancer ensuite l'interface graphique (par exemple backintime-qt).
+
+Lancer Back In Time avec les droits root (important pour un backup complet du système)
+
+    Pour sauvegarder l’ensemble du système (y compris les fichiers appartenant à root et les fichiers système), il est recommandé de lancer Back In Time avec les privilèges root, car en mode utilisateur il ne pourra pas accéder à tous les fichiers.
+
+    Dans le menu, lancez « Back In Time (root) » ou lancez depuis un terminal :
+
+    bash
+    sudo backintime-qt
+
+Configuration du profil de sauvegarde
+
+    Choisissez un emplacement de sauvegarde sur un disque ou une partition où vous avez assez d’espace libre (cette sauvegarde peut être volumineuse).
+
+    Dans l’onglet "Inclusion", sélectionnez la racine / ou les dossiers que vous voulez sauvegarder pour un backup complet. Par exemple :
+
+        /etc (configurations système)
+
+        /home (données utilisateurs)
+
+        /var (données variables, logs)
+
+        /usr, /bin, /sbin (binaries système)
+
+    Évitez de sauvegarder des dossiers temporaires ou points de montage susceptibles de poser problème, comme :
+
+        /proc, /sys, /dev, /run, /tmp, /mnt, /media (ce sont des systèmes virtuels ou temporaires)
+
+Exclusion des dossiers temporaires et systèmes virtuels
+
+    Dans l’onglet "Exclusion", ajoutez ces répertoires :
+
+        text
+        /proc
+        /sys
+        /dev
+        /run
+        /tmp
+        /mnt
+        /media
+
+        Cela évite la sauvegarde de fichiers spéciaux et temporaires qui ne doivent pas être inclus.
+
+    Paramétrage du backup
+
+        Choisissez la fréquence des snapshots (manuelle ou automatique).
+
+        Configurez éventuellement la suppression automatique des anciennes sauvegardes selon vos besoins.
+
+        Activez la compression ou le chiffrement si souhaité (optionnel).
+
+    Lancer la sauvegarde
+
+        Démarrez une sauvegarde manuelle via l’interface en cliquant sur "Sauvegarder maintenant".
+
+        Le logiciel va utiliser rsync pour copier tous les fichiers sélectionnés en créant des snapshots incrémentaux (les fichiers qui n'ont pas changé ne seront pas dupliqués grâce à l’utilisation de hard links).
+
+    Après la sauvegarde
+
+        Vous pourrez naviguer dans les dossiers de sauvegarde comme dans un répertoire normal.
+
+        Pour la restauration, Back In Time permet de copier les fichiers depuis la sauvegarde vers le système.
+
+Points importants à noter :
+
+    Back In Time agit en mode utilisateur ou root. Pour un backup complet du système, travailler en root est nécessaire.
+
+    Certains fichiers système ne doivent jamais être sauvegardés (temporaire, virtuel), donc leur exclusion est indispensable.
+
+    Cette méthode sauvegarde les fichiers mais ne fait pas à proprement parler une image complète du système (pas de sauvegarde au niveau block, ni de bootloader).
+
+    Pour une restauration complète système (y compris système d’amorçage et partitions), un outil comme Timeshift ou Clonezilla serait complémentaire.
+
+    Testez toujours la restauration pour être sûr que votre backup est valide.
+
+Vous avez ainsi un système de sauvegarde complet des fichiers essentiels de votre Linux avec Back In Time, combinant simplicité, efficacité et incrémentalité
+. Si vous souhaitez, je peux vous fournir une procédure détaillée pas à pas avec des captures d’écran ou scripts de configuration adaptés.
