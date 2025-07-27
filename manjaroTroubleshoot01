@@ -10,3 +10,177 @@ Voici les solutions éprouvées pour corriger cette erreur :
 bash
 sudo rm -r /var/lib/pacman/sync/
 sudo pacman -Syyu
+
+
+Partie 2 troubleshoot 
+
+
+Manjaro System Architecture Overview
+Core Components
+
+    Kernel: Rolling kernel updates with options for LTS or experimental branches
+    Package Management: Pacman and Pamac with access to AUR and official repositories
+    Bootloader: GRUB by default, critical for kernel and initrd selection
+    Display Stack: Xorg or Wayland with proprietary or open-source GPU drivers
+
+Update Workflow
+
+System upgrades via pacman -Syu may introduce breaking changes due to rolling releases. Users must manage configuration files, driver compatibility, and kernel versions proactively.
+Common Troubleshooting Scenarios
+1. System Fails to Boot After Update
+
+Possible causes:
+
+    GRUB misconfiguration
+    Broken initramfs
+    Kernel or driver incompatibility
+
+Symptoms:
+
+    Stuck at GRUB prompt or black screen
+    Error: 'initramfs not found' or 'unable to mount root'
+
+2. Pacman Conflicts and Update Failures
+
+Typical messages:
+
+    “could not satisfy dependencies”
+    “conflicting files” or “file exists in filesystem”
+
+Causes:
+
+    Improper AUR usage
+    Partially updated system
+    Manual package installations
+
+3. X Server or Wayland Crash
+
+Symptoms:
+
+    Blank screen after login
+    Looping display manager
+    No tty access
+
+Root causes:
+
+    GPU driver misconfiguration
+    Display manager incompatibility (e.g., LightDM vs GDM)
+
+4. Wi-Fi or Bluetooth Not Working
+
+Often linked to kernel module regression or firmware mismatch after system upgrade.
+Step-by-Step Diagnostics
+GRUB and Boot Issues
+
+    Chroot from live USB:
+
+    manjaro-chroot -a
+
+    Reinstall GRUB:
+
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=manjaro
+    update-grub
+
+    Rebuild initramfs:
+
+    mkinitcpio -P
+
+Resolving Package Conflicts
+
+    Force install when safe:
+
+    pacman -Syu --overwrite "*"
+
+    Remove orphaned packages:
+
+    pacman -Rns $(pacman -Qtdq)
+
+    Clear package cache:
+
+    pamac clean --build-files
+
+GPU Driver Failures
+
+Check current driver status:
+
+mhwd -li
+
+Switch drivers:
+
+mhwd -r pci video-nvidia
+mhwd -a pci free 0300
+
+Or reinstall proprietary:
+
+mhwd -i pci video-nvidia
+
+Network Adapter Troubleshooting
+
+Check kernel modules:
+
+lspci -k | grep -A 3 Network
+
+Reload driver:
+
+modprobe -r 
+modprobe 
+
+Inspect journal logs:
+
+journalctl -k -g firmware
+
+Architectural Pitfalls
+1. Blind Rolling Updates
+
+    Skipping changelogs or ignoring prompts during updates can break critical components
+    Always use pacman -Syu from TTY if GUI is unresponsive
+
+2. Overreliance on AUR
+
+    AUR packages are user-contributed and may conflict with official packages
+    Prefer Flatpak or Snap for sandboxed application delivery
+
+3. Ignoring Kernel Compatibility
+
+Using a newer kernel without LTS fallback may result in driver or peripheral failures. Always install at least two kernel versions:
+
+mhwd-kernel -i linux-lts
+
+Long-Term Solutions
+Implement Update Hygiene
+
+    Use timeshift for pre-update snapshots
+    Review /etc/pacman.conf for ignored packages
+    Test on staging systems before pushing to production endpoints
+
+Optimize GRUB Configuration
+
+    Enable multiple boot entries for fallback kernels
+    Reduce boot delay for faster recovery
+    Keep boot partition clean and under 500MB limit
+
+Maintain Driver Integrity
+
+    Use mhwd for GPU/NIC management instead of manual installation
+    Pin working driver versions when stability is critical
+    Log kernel-module mappings for reproducibility
+
+Conclusion
+
+Manjaro offers cutting-edge features and extensive customization, but with that comes the responsibility of advanced system management. By applying robust diagnostic workflows, maintaining snapshot backups, and proactively managing updates, administrators can harness the power of Manjaro without sacrificing stability. For professionals leveraging Manjaro in DevOps, embedded, or workstation environments, treating it with the same rigor as any production system is key to long-term success.
+FAQs
+1. How do I recover from a failed Manjaro update?
+
+Boot into a live USB, chroot into your system using manjaro-chroot -a, and rebuild GRUB or initramfs. Use pacman -Syu to complete the interrupted update.
+2. Why is my display manager failing after reboot?
+
+Likely due to GPU driver mismatch or misconfigured display manager. Use TTY to remove/reinstall drivers or switch to a compatible DM.
+3. How can I safely manage rolling updates?
+
+Enable snapshots with Timeshift, read release announcements, and avoid forced updates without reviewing package changes.
+4. Is it safe to use AUR for production systems?
+
+Only if packages are maintained and reviewed. Prefer official repos or containerized alternatives like Flatpak for stability.
+5. My Wi-Fi stopped working after a kernel upgrade. What should I do?
+
+Check if the network driver module is loaded. Try switching to an LTS kernel or reinstalling firmware packages.
