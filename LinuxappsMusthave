@@ -4,4 +4,6 @@ Buzz - Line voice to text transcript (notes etc)
 Foliate - tranform your pdfs in a nice rich book reading style - supports many free online libraries and you can download
 Appflowy - powerfull notions + mudules like notion + modules and AI based 
   https://docs.appflowy.io/
- https://appflowy.com/templates
+  https://appflowy.com/templates
+Instalation: (Don't use the appimage) 
+   sudo snap install appflowy
