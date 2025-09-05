@@ -1,0 +1,56 @@
+~/backup-config.sh
+
+Usecase
+you own and use computer A with your configuration
+you now bought another computer B which you will install with Manjaro
+you would like to apply the same configuration on computer B as you have on computer A
+in this context configuration is the files and folders found in
+$HOME
+/home/$USER
+On computer A
+ONLY user configuration is supported
+
+Run the script using a shell
+
+bash backup-config.sh $HOME/backup
+The script creates three (3) files in the directory you specify - e.g. an USB stick
+
+a list of repo packages
+a list of custom packages
+a tarred archive with the configuration
+On computer B
+Navigate to the USB stick and open a terminal
+
+Install repo packages
+
+sudo pacman -Syu - < repo-pkglist.txt
+Install custom packages
+
+pamac build --no-confirm $(cat cust-pkglist.txt)
+Extract the files
+
+tar -xzf --overwrite ---directory $HOME dotconf.tar.gz
+Caveats
+This script does not take into account applications added using flatpak, snap or appimage.
+
+Please consult the applicable man pages on how to list such applications and subsequently add such packages to the new system.
+
+User configuration pertinent to those packages likely exist in either ~/.config and ~/.local but may exist in other locations inside your home.
+
+As far as I can tell, flatpaks are kept in:
+
+~/.local/share/flatpak/
+and/or
+
+/var/lib/flatpak
+For snaps, it seems in the:
+
+/snap/
+
+
+
+
+
+
+
+
