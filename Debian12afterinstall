@@ -1,0 +1,16 @@
+Installation
+
+Secure way:
+
+    Download install script:
+
+    wget -P /tmp https://github.com/BenyHdezM/Debian4Gamers/raw/main/install.sh
+
+Review it at /tmp/install.sh
+
+Run it:
+
+bash /tmp/install.sh
+
+Note: Always exercise caution when executing scripts. Make sure to review the script and back up your data before significant changes
+this is mainly for gnome but to see in kde 
