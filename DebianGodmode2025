@@ -1,0 +1,237 @@
+Post Install System Configuration For God Mode Gaming On Debian
+
+So this isn't a guide for just any kind of Microsoft Windows Gaming on Gnu+Linux, but it's actually a guide, for turning Debian Gnu+Linux into a God Mode gaming system that can compete with users of Microsoft Windows, in online games, made for Microsoft Windows. In order to do that, we have to configure the system, comprehensively, and similarly to how Microsoft Windows users, have to configure their systems to get God Mode performance in their OS.
+
+After installing Debian, you need to get the right packages to enable you to do gaming on Linux. On Gnu+Linux the command line is so useful compared to Microsoft Windows, that we use it all the time. These are the commands to grab the packages we need for gaming.
+(tested as of debian bookworm 12.8, these things can change slightly over time)
+
+
+edit /etc/apt/sources.list to enable support for extra packages
+
+sudo rm /etc/apt/sources.list
+
+sudo touch /etc/apt/sources.list
+
+sudo echo -e "deb http://deb.debian.org/debian/ bookworm main contrib non-free non-free-firmware \ndeb http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware \ndeb http://deb.debian.org/debian/ bookworm-updates main contrib non-free non-free-firmware \ndeb http://deb.debian.org/debian/ bookworm-backports main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list
+
+Install the packages, with dependencies for gaming
+
+sudo dpkg --add-architecture i386
+
+sudo apt update
+
+sudo apt install lutris steam gamemode vulkan-tools libvulkan1:i386 -y
+
+(also fully update the system, that is important because gaming typically is dependent on the latest packages available)
+
+sudo apt upgrade
+
+( you have to run lutris once, to let it update itself, then close it out. )
+( I also go to it's website and use sudo dpkg -i lutris.deb
+on the latest lutris release which is important to do on debian)
+https://github.com/lutris/lutris/releas ... 18_all.deb
+(sudo dpkg -i lutris.deb will complain about missing dependencies, just use sudo apt install (+type in the missing package name listed in the error message))
+
+Install the dependencies to build a custom kernel for gaming
+
+sudo apt install bc binutils bison dwarves flex gcc gnupg2 gzip libelf-dev libncurses5-dev libssl-dev make openssl perl-base rsync tar xz-utils pahole -y
+
+
+I'm not going to explain every single detail because then the guide would stretch out for miles. This is what you do, if you're a former Microsoft Windows gamer, turning Debian into a gaming system that can play the same games you used to play on Microsoft.
+
+In order to use gamemode you have to set your limits correctly, editing this file:
+/etc/security/limits.conf
+
+and adding this line to it:
+
+user hard nice -20
+
+In order to use esync you have to follow these instructions from lutris
+
+https://github.com/lutris/docs/blob/mas ... ToEsync.md
+"Modifying Systemd configuration
+This method applies to Ubuntu and other systems using systemd. You (with root privileges or sudo) need to edit both /etc/systemd/system.conf and /etc/systemd/user.conf by adding DefaultLimitNOFILE=524288. If DefaultLimitNOFILE= already exists in both system.conf and user.conf, add 524288 after = and make sure to uncomment the line (remove the # in the beginning of the line) to make it functional.
+
+Once the files are edited, restart your computer for the changes to take effect. To verify if the limits were applied, run ulimit -Hn to see 524288 being reported."
+
+It's also common to modify systemd in other ways in order to get better performance.
+
+I also edit /etc/systemd/system.conf
+and add these lines.
+
+DefaultCPUAccounting=no
+DefaultIOAccounting=no
+DefaultIPAccounting=no
+DefaultMemoryAccounting=no
+DefaultTasksAccounting=no
+
+and in /etc/systemd.journald.conf
+
+I use:
+
+Storage=none
+
+Then we can configure /etc/sysctl.conf to modify some parameters that effect the systems kernel, without modifying the kernel itself. These settings can be improved upon, and it's something I still have to work on, but right now I use these settings:
+
+cat /etc/sysctl.conf
+
+## https://www.kernel.org/doc/html/latest/ ... ysctl.html
+
+net.core.wmem_max=16777216
+net.core.rmem_max=16777216
+#net.ipv4.conf.default.rp_filter=1
+#net.ipv4.conf.all.rp_filter=1
+net.ipv4.ip_forward=0
+net.ipv6.conf.all.forwarding=0
+net.ipv4.conf.all.accept_redirects=0
+net.ipv4.conf.default.accept_redirects=0
+net.ipv4.conf.all.send_redirects=0
+net.ipv4.conf.all.log_martians=0
+net.ipv4.tcp_fastopen=1
+ipv4.tcp_fin_timeout=20
+ipv4.tcp_tw_reuse=1
+net.ipv4.tcp_max_syn_backlog=2048
+net.ipv4.tcp_timestamps=0
+net.ipv4.tcp_allowed_congestion_control=
+net.ipv4.tcp_autocorking=0
+
+#This is a legacy option, it has no effect anymore.
+net.ipv4.tcp_low_latency=1
+
+#net.ipv4.udp_child_hash_entries = 0
+#net.ipv4.udp_early_demux = 1
+#net.ipv4.udp_hash_entries = 16384
+#net.ipv4.udp_l3mdev_accept = 0
+#net.ipv4.udp_mem = 569031 758708 1138062
+#net.ipv4.udp_rmem_min = 4096
+#net.ipv4.udp_wmem_min = 4096
+
+vm.dirty_background_ratio=10
+vm.swappiness=10
+vm.dirty_ratio=10
+#vm.max_map_count=16777216
+#vm.max_map_count=1048576
+vm.max_map_count=524288
+
+It can get very complex and confusing trying to explain every single detail, so I am trying my best to keep this as short as possible.
+
+Then, just like on Microsoft Windows, on Gnu+Linux Debian edition we want to disable unneeded services to improve performance for highly demanding competitive online gaming!
+Depending on the way you installed debian, these will look different.
+
+You mainly need dbus, lm-sensors, either lightdm/sddm/gdm (for either xfce, kde, or gnome), udev, wpa-supplicant if you use wifi, and everything else you can safely disable.
+
+sudo service --status-all
+
+sudo systemctl disable --now anacron cron cups cups-browsed avahi-daemon avahi-daemon.socket exim4 apparmor
+
+Edit /etc/default/grub in order to turn on performance mode
+
+add this setting (these are commands for the kernel, you can have lots of them) cpufreq.default_governor=performance
+
+before installing the kernel it looks like this for me:
+
+GRUB_CMDLINE_LINUX_DEFAULT="quiet cpufreq.default_governor=performance threadirqs"
+
+use sudo update-grub to apply the settings, and reboot at some point, after fully upgrading the system, and before attempting to build a custom kernel to apply the performance settings.
+
+sudo update-grub
+
+after installing the custom kernel I like to further attempt to tweak things, different people use different settings here, you can find these with a little effort online. Right now on my system, I am using these, with the latest stable kernel branch ( 6.12.8 ) intel_pstate=active is for those of us with an intel cpu.
+
+GRUB_CMDLINE_LINUX_DEFAULT="threadirqs intel_pstate=active cpufreq.default_governor=performance cpuidle.off=1 rootwait mitigations=off norandmaps pti=off tsc=nowatchdog powersave=off pcie_port_pm=off schedstats=off no_debug_objects noirqdebug pci=realloc=on"
+
+Desktop Tweaks
+
+Then there are some desktop tweaks you can use to improve performance as well, and for different desktop environments these procedures vary.
+
+you want to use the X11 display server(do not use wayland for gaming, maybe it will be good three years from now, right now X11 is by far the best for performance)
+
+you can disable compositing, or disable some of it's features, (turn off drawing shadows, turn it into latency performance mode)
+
+you want workspaces set to the mininum(1) (gnome has dynamic mode)
+
+you want to set startup programs to the mininum, on xfce you need polkit to be running in order to run graphical programs with enhanced privileges, which sometimes you will want to do.
+
+Building A Custom Gaming Kernel, And Installing Graphics Drivers
+
+So basically I build this system all the time, and try new things, which is very tedious, which is why I made this guide for you guys. There are different ways to do everything on Gnu+Linux, but these are the things that I do, whenever I build the debian system for gaming...
+
+I build a custom kernel, (which takes me about 10-30 minutes) and then, I install my graphics drivers. The order of operations is very important to remember on Linux, because some of these operations are complex, and can break things, if they aren't done correctly, and things change over time. You can use your package manager(apt) to install your graphics drivers, I use the nvidia installer from their website to install it.
+
+Right now this config is made for the 6.12.8 kernel, intel and amd processors, with all kinds of hardware, and without support for debugging or suspend or hibernate, and all performance enhancing tweaks I can possibly identify/get working enabled. https://pastebin.com/GTBLc8cA
+
+if you want to use a newer kernel with this .config then you have to copy this .config into the new kernel source directory, and use the command make olddefconfig which will update the config, with default options for everything that has changed between updates, then you can continue to build it normally.
+
+https://cdn.kernel.org/pub/linux/kernel ... 2.8.tar.xz
+
+I use a root account to build and install the kernel
+(if you used the install dvd you already can login as root)
+
+sudo passwd
+
+(have to reboot to activate the root account)
+
+as root extract the linux kernel somewhere(Linus said in some post online to use the home folder ideally, so that's what I do)
+
+su
+
+tar -xf linux-6.12.8.tar.xz
+
+copy my config into a file called .config inside the kernel source directory (forum post has word limit so can't post it here, and debian.paste has size limit so can't post it there, so I used pastebin.)
+
+https://pastebin.com/GTBLc8cA
+
+save my config into a file called .config, then you can build and install the kernel, with modules activated to support your hardware.
+
+These are the commands to run, from inside the linux kernel source directory to build and install the kernel.
+
+make -j$(nproc)
+
+make modules -j$(nproc)
+
+make modules_install -j$(nproc)
+
+make headers_install
+
+make install
+
+after installing the new custom gaming kernel, you can install your graphics drivers if needed, and that's all.
+
+This config (https://pastebin.com/GTBLc8cA) is made for intel and amd processors, and you can edit it to customize it to your liking freely, it is a default debian config (/boot/config-6.1.0-25-amd64) that I tweaked with settings I use for God Mode gaming performance, without altering sections on drivers/filesystems that come with default debian. So one way to make it better would to learn how to use make localmoconfig and use that command.
+
+# final notes, tips and tricks
+
+if you install your nvidia driver from the nvidia website, (instead of using apt) for the 6.12.x kernel series, you have to use this command to get past the warning message about real time kernels, sh IGNORE_PREEMPT_RT_PRESENCE=1 nvidia.run
+
+Also here's some more cheat codes.... in /etc/environment I use these for gaming
+
+# /etc/environment
+__GL_LOG_MAX_ANISO=0
+DXVK_HUD=fps
+
+Configuring nvidia-settings, and hardware
+
+Configuring the operating system itself isn't enough to get God Mod performance, we also have to get some gaming hardware! that includes the full system, the motherboard, the cpu, the ram, the mouse, the monitor. These usually are identified as designed for gaming.
+
+for nvidia-settings you want to use either your monitors max refresh rate, or a multiple of 60hz depending on your frame rates for the game you are targetting, and high performance graphics mode, with vsync disabled (for god mode performance we don't use vsync we use the lowest graphics settings possible for the highest frame rates and lowest latency) antialiasing set to override application settings, and set to off. We want to turn everything off that harms our potential performance to get God Mod level performance. Then you can manually turn your fan speeds up, to keep your graphics card cool, and prevent performance throttling that happens if it starts to overheat. Turn "prefer maximum performance on." Turn your color range to limited, dithering off, and digital vibrance to either -256 or -512 to reduce the overly saturated colors in video games which will make it easier for you to see and target the opponent and react quickly without your brain having to process a million colors instead of the reduced information you need to dominate video games.
+
+Then under nvidia-settings configuration there is a save button and you can save the new settings as ~/.nvidia-settings-rc and on xfce you can make a startup program from your settings menu, with this command to load your settings on startup.(on login) (for other desktop environments you either have to manually load them, or figure out how to make startup programs there)
+
+nvidia-settings --load-config-only --config=~/.nvidia-settings-rc
+
+For your monitor you want to turn off adaptive sync/gsync, all display syncing features, and for your bios you want to configure it to disable all c-states and turn on all the high performance settings you can identify.
+
+In the future I want to make a guide that shows how to configure the system completely, the entire system, for professional gaming performance, but right now on Gnu+Linux Nvidia drivers do not unlock the full potential for all of our cards like they do for Microsoft, so I have to build a whole new gaming computer before I will do that, and these days they are expensive.
+Last edited by gamingondebian on 2025-01-05 18:05, edited 15 times in total.
+Top
+
+eamanu	
+    Debian Developer
+    Debian Developer	
+    Posts: 163	
+    Joined: 2020-07-12 21:37	
+    Has thanked: 10 times
+    Been thanked: 15 times
+    Contact: Contact eamanu
+
+Re: God Mode Gaming On Debian Guide 2025
