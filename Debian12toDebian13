@@ -1,0 +1,43 @@
+  206  lsb_release -a
+  207  sudo apt update
+  208  sudo apt upgrade
+  209  sudo apt full-upgrade
+  210  sudo apt autoremove --purge
+  211  sudo apt list '?narrow(?installed, ?not(?origin(Debian)))'
+  212  sudo apt-mark showhold
+  213  cp /etc/apt/sources.list /etc/apt/sources.list-bck
+  214  sudo cp /etc/apt/sources.list /etc/apt/sources.list-bck
+  215  sudo cp -r /etc/apt/sources.list.d /etc/apt/sources.list.d-bck
+  216  sudo sed -i 's/bookworm/trixie/g' /etc/apt/sources.list
+  217  sudo sed -i 's/bookworm/trixie/g' /etc/apt/sources.list.d/*
+  218  nano /etc/apt/sources.list.d
+  219  sudo nano /etc/apt/sources.list.d
+  220  sudo nano /etc/apt/sources.list
+  221  sudo apt update
+  222  sudo apt update 
+  223  sudo apt upgrade
+  224  sudo apt autoremove --purge
+  225  sudo apt purge '~o'
+  226  history
+
+
+--------------------------------------------------------------------------
+
+
+Build and Install GameMode
+
+Then clone, build and install a release version of GameMode at 1.8.2:
+
+git clone https://github.com/FeralInteractive/gamemode.git
+cd gamemode
+git checkout 1.8.2 # omit to build the master branch
+./bootstrap.sh
+
+To test GameMode installed and will run correctly:
+
+gamemoded -t
+
+To uninstall:
+
+systemctl --user stop gamemoded.service
+ninja uninstall -C builddir
