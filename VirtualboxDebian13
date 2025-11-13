@@ -1,0 +1,27 @@
+
+    Pre-Installed Debian 13
+    Local user with sudo rights
+    Internet connectivity
+
+Without any further delay, let’s deep dive into VirtualBox installation steps on Debian 13.
+1) Add VirtualBox APT Repository
+
+Latest VirtualBox package is not included in the default package repositories, so we to have add its official repository.
+
+Login to your Debian 13 system and open the terminal and run the following commands to import gpg key of Virtualbox repository.
+
+$ sudo apt install curl wget gnupg2 lsb-release -y
+$ curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/vbox.gpg
+$ curl -fsSL https://www.virtualbox.org/download/oracle_vbox.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/oracle_vbox.gpg
+
+Now, run following echo command to add Debian 13 VirtualBox apt repository.
+
+$ echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+
+2) Install VirtualBox on Debian 13
+
+Run the following apt command to install latest VirtualBox 7.2 on Debian 13.
+
+$ sudo apt update
+$ sudo apt install linux-headers-$(uname -r) dkms -y
+$ sudo apt install virtualbox-7.2 -y
