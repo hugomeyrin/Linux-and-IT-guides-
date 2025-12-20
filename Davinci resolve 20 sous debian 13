@@ -1,0 +1,29 @@
+Davinci resolve debian 13
+
+
+Run the installer from the terminal:
+
+# make it executable
+chmod +x ./DaVinci_Resolve_19.1.3_Linux.run
+./DaVinci_Resolve_19.1.3_Linux.run 
+
+I see these errors:
+
+Error: Missing or outdated system packages detected.
+
+Please install the following missing packages:
+    libapr1 libaprutil1 libasound2 libglib2.0-0
+
+Use SKIP_PACKAGE_CHECK=1 to bypass the system package check.
+
+***********************
+Installation cancelled.
+
+So I do as they say:
+
+sudo apt install libapr1 libaprutil1 libasound2t64 libglib2.0-0
+
+Then re-run the installer:
+
+export SKIP_PACKAGE_CHECK=1
+./DaVinci_Resolve_19.1.3_Linux.run
