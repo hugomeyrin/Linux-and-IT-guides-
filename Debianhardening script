@@ -1,0 +1,14 @@
+🛡️ Fort Knox Debian 13 Hardening Script
+
+A one-command, all-in-one Bash script to secure and harden Debian 13 — from SSH and firewall setup to automatic updates, AppArmor, AIDE, and more.
+
+    Designed for self-hosters, sysadmins, and anyone who wants their Debian box to feel like Fort Knox.
+
+🚀 Quick Start
+
+Run this as root on a fresh Debian 13 installation:
+
+curl -fsSL https://raw.githubusercontent.com/SphynxHF/Fort-Knox-Debian-13/refs/heads/main/fort-knox-debian13.sh -o fort-knox-debian13.sh
+chmod +x fort-knox-debian13.sh
+sudo ./fort-knox-debian13.sh
+
