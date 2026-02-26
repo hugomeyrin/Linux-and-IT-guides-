@@ -1,0 +1,94 @@
+Voici comment gérer un parc de postes Debian Desktop avec Ansible, de manière sécurisée, automatisée et scalable — même pour 10, 50 ou 100 postes.
+✅ 1. Prérequis
+Sur le contrôleur Ansible :
+
+    Ansible installé (voir précédemment).
+    Clé SSH déployée sur tous les postes.
+    Accès sudo sans mot de passe pour l’utilisateur Ansible (ou utiliser become avec mot de passe si nécessaire).
+
+Sur les postes Debian Desktop :
+
+    SSH activé : sudo systemctl enable ssh && sudo systemctl start ssh
+    Utilisateur avec accès SSH (ex: user1)
+    sudo configuré pour l’utilisateur (sans mot de passe si possible) :
+
+    bash
+
+    echo "user1 ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/user1
+
+✅ 2. Créer une structure de projet
+
+bash
+
+mkdir -p ~/ansible-debian-desktop/{inventory,playbooks,group_vars,host_vars,roles}
+cd ~/ansible-debian-desktop
+
+✅ 3. Configurer l’inventaire
+
+Créez inventory/hosts.yaml :
+
+yaml
+
+---
+all:
+  children:
+    desktops:
+      hosts:
+        desktop01:
+          ansible_host: 192.168.1.10
+        desktop02:
+          ansible_host: 192.168.1.11
+        # ... jusqu'à desktop20
+        desktop20:
+          ansible_host: 192.168.1.29
+
+  vars:
+    ansible_user: user1
+    ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    ansible_python_interpreter: /usr/bin/python3
+
+    ✅ Vous pouvez aussi utiliser des noms DNS ou des plages IP.
+
+✅ 4. Tester la connexion
+
+bash
+
+ansible all -i inventory/hosts.yaml -m ping
+
+    Si vous avez des erreurs, vérifiez :
+
+        La clé SSH
+        Le port 22 ouvert
+        Le firewall (ufw allow 22)
+
+✅ 5. Créer un playbook de base pour les postes Debian Desktop
+
+Créez playbooks/desktop_setup.yaml :
+
+yaml
+
+---
+- name: Configurer les postes Debian Desktop
+  hosts: desktops
+  become: yes
+  tasks:
+    - name: Mettre à jour les paquets
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Installer les paquets de base
+      apt:
+        name:
+          - curl
+          - git
+          - vim
+          - htop
+          - gnupg
+          - software-properties-common
+        state: present
+
+    - name: Installer un navigateur (Firefox)
+      apt:
+        name: firefox
+        state: present
