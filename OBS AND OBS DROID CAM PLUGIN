@@ -1,0 +1,43 @@
+https://droidcam.app/linux/
+iNSTALL ALL OBS + OBS STUDIO CAM 
+
+Use OBS Studio
+
+The easiest option for Linux users is to install OBS Studio along with the DroidCam OBS plugin. OBS Studio is a popular (open-source) video mixing program, and it includes built-in Virtual Camera support via the v4l2loopback module for Zoom/Discord/etc integration.
+DroidCam integrates directly into OBS as a plugin.
+
+Option A: Flatpak Install:
+1. flatpak install flathub com.obsproject.Studio
+2. flatpak install flathub com.obsproject.Studio.Plugin.DroidCam
+3. flatpak override --user --device=all com.obsproject.Studio(override for v4l2loopback access, see below)
+
+Option B: Manual Install:
+1. Install OBS Studio for your distro.
+2. Install the DroidCam plugin based on your local ffmpeg version.
+
+Next, install and configure the V4L2loopback Module.
+
+Launch OBS and you should find DroidCam as a source option and "Start Virtual Camera" option in the Controls dock.
+Next steps:
+
+    DroidCam OBS usage
+    OBS Virtual Camera Guide
+
+DroidCam Linux Client   BETA
+
+If you prefer not to install OBS Studio, use the DroidCam Client. The DroidCam Client is a simplified version of OBS and is more straightforward to use.
+
+1 – Download and Install the new DroidCam Client.
+
+Debian/Ubuntu  –  droidcam_client_amd64.deb (50MB)
+
+wget -O /tmp/droidcam_client_amd64.deb https://droidcam.app/go/droidCam.client.setup.deb
+sudo apt install -f /tmp/droidcam_client_amd64.deb
+
+Fedora/RHEL  –  droidcam-client.x86_64.rpm (50MB)
+
+wget -O /tmp/droidcam-client.x86_64.rpm https://droidcam.app/go/droidCam.client.setup.rpm
+sudo dnf install /tmp/droidcam-client.x86_64.rpm
+*If the client fails to launch, ensure you have the AppIndicator gnome shell extension installed, and enabled:
+sudo dnf install gnome-shell-extension-appindicator gnome-extensions-app
+Reboot (or restart Gnome: systemctl restart gdm), then use gnome-extensions-app to enable AppIndicator (tray icons).
