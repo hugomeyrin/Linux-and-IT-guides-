@@ -3,7 +3,8 @@ iNSTALL ALL OBS + OBS STUDIO CAM
 
 Use OBS Studio
 
-The easiest option for Linux users is to install OBS Studio along with the DroidCam OBS plugin. OBS Studio is a popular (open-source) video mixing program, and it includes built-in Virtual Camera support via the v4l2loopback module for Zoom/Discord/etc integration.
+The easiest option for Linux users is to install OBS Studio along with the DroidCam OBS plugin.
+OBS Studio is a popular (open-source) video mixing program, and it includes built-in Virtual Camera support via the v4l2loopback module for Zoom/Discord/etc integration.
 DroidCam integrates directly into OBS as a plugin.
 
 Option A: Flatpak Install:
@@ -41,3 +42,7 @@ sudo dnf install /tmp/droidcam-client.x86_64.rpm
 *If the client fails to launch, ensure you have the AppIndicator gnome shell extension installed, and enabled:
 sudo dnf install gnome-shell-extension-appindicator gnome-extensions-app
 Reboot (or restart Gnome: systemctl restart gdm), then use gnome-extensions-app to enable AppIndicator (tray icons).
+
+you need to go after installed to the droidcam on your phone launch it and "WIFI ip address will show up" also a port will in this samelist 
+on your laptop you need to to launch "DroidCam Client (OBS)", this program need to be running 
+Next step will be to launch OBS STUDIO at the same time so the combo (lAPTOP - OBS STUDIO + DroidCam Client (OBS),pHONE - droidcam), and if you get an image with your phone you can select from  the obs as a video source droidcam
