@@ -1,0 +1,17 @@
+https://www.clamav.net/downloads
+installer clamav-ui
+
+sudo apt install chkrootkit
+
+Verify the installation by checking the version:
+
+chkrootkit -V
+
+sudo chkrootkit -q 
+
+sudo apt install rkhunter 
+
+sudo rkhunter --check
+
+
+sudo apt install lynis 
