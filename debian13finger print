@@ -1,0 +1,44 @@
+Les résultats de recherche concernent principalement les applications mobiles et les services Infomaniak (kDrive, Mail, Manager), mais ne contiennent pas d'instructions spécifiques pour configurer l'authentification par empreinte digitale (fingerprint) au niveau du système d'exploitation Debian 13 (Trixie).
+
+Cependant, voici la procédure standard pour activer cette fonctionnalité sur Debian, qui repose sur le module PAM (fprintd) :
+Prérequis
+
+Votre lecteur d'empreintes doit être compatible avec libfprint. Vous pouvez vérifier sa détection avec la commande :
+
+bash
+
+lsusb
+
+(Recherchez votre lecteur dans la liste et vérifiez sa compatibilité sur le wiki de fprint).
+Procédure d'installation et d'activation
+
+    Installer les paquets nécessaires Ouvrez un terminal et installez le démon et le module PAM :
+
+    bash
+
+sudo apt update
+sudo apt install fprintd libpam-fprintd
+
+Enregistrer votre empreinte Lancez la commande suivante pour enregistrer votre doigt (remplacez $USER par votre nom d'utilisateur si nécessaire) :
+
+bash
+
+fprintd-enroll
+
+Suivez les instructions à l'écran (posez le doigt à plusieurs reprises jusqu'à la confirmation "Enrollment completed").
+
+Activer l'authentification au login Une fois l'empreinte enregistrée, le système est généralement configuré automatiquement pour l'utiliser lors de la connexion (écran de login GDM/SDDM) et pour les commandes sudo.
+
+Si cela ne fonctionne pas immédiatement, vous pouvez vérifier que le module est bien activé dans la configuration PAM. Sur Debian, l'installation de libpam-fprintd devrait ajouter automatiquement la ligne suivante dans /etc/pam.d/common-auth :
+
+plain text
+
+    auth    [success=done ignore=ignore default=bad] pam_fprintd.so
+
+    (Cette ligne doit se trouver avant la ligne contenant pam_unix.so).
+
+Vérification
+
+Déverrouillez votre session ou tentez une commande sudo. Le système devrait vous demander votre empreinte avant de proposer le mot de passe classique.
+
+Note : Si vous utilisez un environnement de bureau spécifique (KDE, GNOME, XFCE), des modules complémentaires peuvent être nécessaires pour gérer l'enregistrement des empreintes via une interface graphique.
