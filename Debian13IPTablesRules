@@ -1,0 +1,73 @@
+    GUFW is Debian's GUI firewall. Sadly it does not work properly when blocking outbound traffic. Also it is not packaged with DVD-1. Hence it is recommended that you use iptables instead. But you could install it anyway and have it disabled.
+
+    Run sudo kate /etc/iptables.conf and configure your firewall rules. The following rules allow for downloading of packages and browsing of the Internet but not much more (please improve them): 
+
+*filter
+#DROP everything by default
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+#And explicitly allow the following:
+#LOCAL
+-A INPUT -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
+#HTTP
+-A INPUT -p tcp -m tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+#-A INPUT -p tcp -m tcp --dport 8080 -m state --state ESTABLISHED -j ACCEPT
+#-A INPUT -p tcp -m tcp --sport 8080 -m state --state ESTABLISHED -j ACCEPT
+#HTTPS
+-A INPUT -p tcp -m tcp --dport 443 -m state --state ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
+#DNS
+-A INPUT -p udp -m udp --sport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p udp -m udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --sport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+#PING
+-A INPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+#LOG 3 dropped packets per minute to /var/log/syslog
+-A INPUT -m limit --limit 3/min -j LOG --log-prefix "~~~~IP INPUT DROP: "
+-A INPUT -j DROP
+#LOCAL
+-A OUTPUT -s 127.0.0.1/32 -d 127.0.0.1/32 -j ACCEPT
+#HTTP
+-A OUTPUT -p tcp -m tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --sport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+#-A OUTPUT -p tcp -m tcp --dport 8080 -m state --state NEW,ESTABLISHED -j ACCEPT
+#HTTPS
+-A OUTPUT -p tcp -m tcp --sport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+#DNS
+-A OUTPUT -p udp -m udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p udp -m udp --sport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+-A OUTPUT -p tcp -m tcp --sport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+#PING
+-A OUTPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+#LOG 3 dropped packets per minute to /var/log/syslog
+-A OUTPUT -m limit --limit 3/min -j LOG --log-prefix "~~~~IP OUTPUT DROP: "
+-A OUTPUT -j DROP
+COMMIT
+
+    When done run iptables-restore < /etc/iptables.conf. Note that these rules are reset at each restart so either do the next step before the next restart or have your Internet disabled on startup.
+
+    Install iptables-persistent via apper or apt-get install
+
+    Run sudo kate /etc/iptables/rules.v4 and copy the contents of /etc/iptables.conf into it
+
+    Run sudo iptables-restore < /etc/iptables/rules.v4 or sudo ip6tables-restore < /etc/iptables/rules.v6
+    If your applications have problems connecting to the Internet you need to find out which protocol and ports you need to open via iptables rules to get them working. Alternatively you could allow all outbound traffic. But this isn't recommended for security purposes. 
+
+Close ports and inspect traffic
+
+    With these commands you can find out which applications on your machine are sending or receiving Internet traffic: lsof -i and ss -pln or sudo ss -anp --tcp --udp | grep LISTEN
+
+        Use sudo fuser -v portnumber/tcp to find out which application is causing an open port 
+    With zenmap you can scan your own computer for open ports. Install it and then do a full scan on 127.0.0.1. Do not scan machines that do not belong to you.
+
+    If you don't have network printers you can disable CUPS like so: sudo systemctl disable cups.socket cups.path cups.service sudo systemctl kill --signal=SIGKILL cups.service sudo systemctl stop cups.socket cups.path
+    You can use BUM to disable apps that start automatically. 
+
+Wireshark
+
