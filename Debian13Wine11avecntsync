@@ -1,0 +1,31 @@
+Les dépôts officiels de Debian 13 contiendront probablement une version stable de Wine (souvent la branche "Stable" ou une version "Development" figée au moment de la sortie de la distribution), mais rarement la toute dernière version numérique comme la 11.x immédiatement. Pour obtenir cette version précise, vous devrez probablement utiliser le dépôt officiel de WineHQ plutôt que ceux de Debian.
+
+Voici la procédure recommandée pour installer la dernière version disponible (potentiellement la 11 ou supérieure) via WineHQ sur Debian 13 :
+
+    Activer l'architecture 32 bits (indispensable pour Wine) :
+
+    bash
+    sudo dpkg --add-architecture i386
+
+    Télécharger et ajouter la clé GPG de WineHQ :
+
+    bash
+    sudo mkdir -pm755 /etc/apt/keyrings
+    sudo wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+
+    Ajouter le dépôt WineHQ : Debian 13 (Trixie) étant la version "Testing" au moment de la conception de Wine 11, ou devenue "Stable" récemment, il faut utiliser le dépôt correspondant. Si Trixie est stable, utilisez debian-trixie. Sinon, essayez debian-bookworm (l'ancienne stable) qui est souvent plus compatible pour les paquets stables de WineHQ, ou debian-testing.
+
+    bash
+    sudo wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/trixie/winehq-trixie.sources
+
+    Note : Si le fichier ci-dessus n'existe pas encore car Trixie est très récente, remplacez trixie par bookworm dans l'URL.
+
+    Mettre à jour et installer Wine :
+
+    bash
+    sudo apt update
+    sudo apt install --install-recommends winehq-staging
+
+    La branche staging contient les versions de développement récentes (comme la 11). Utilisez winehq-devel pour les versions de développement brut ou winehq-stable pour la version la plus éprouvée.
+
+Une fois installé, vérifiez la version avec la commande wine --version. Si le dépôt WineHQ pour Debian 13 n'est pas encore totalement opérationnel, l'utilisation du dépôt Debian 12 (Bookworm) est souvent une alternative fonctionnelle pour obtenir des versions récentes de Wine sur une Debian 13 fraîchement installée.
