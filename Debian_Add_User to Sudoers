@@ -1,0 +1,11 @@
+Edit sudoers with visudo and add one line:
+
+visudo
+
+then add:
+
+hugo ALL=(ALL:ALL) ALL
+
+For passwordless sudo:
+
+hugo ALL=(ALL:ALL) NOPASSWD: ALL
