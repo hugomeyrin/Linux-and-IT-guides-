@@ -1,2 +1,33 @@
-https://github.com/Bigyls/USBGuardGUI/releases/tag/v1.0.2 - debian paquage
+
+1 - Install usbguard 
 sudo apt install usbguard
+
+
+
+2 - Install GUI version of usbguard 
+https://github.com/Bigyls/USBGuardGUI/releases/tag/v1.0.2 - debian paquage
+
+
+
+
+
+3 - Overview of USBGuard Commands
+
+USBGuard is a command-line tool used to manage USB device authorization on Linux systems. Below are the key commands you can use with USBGuard.
+Key Commands
+Command	Description
+usbguard list-devices	Lists all USB devices recognized by USBGuard.
+usbguard allow-device <id>	Authorizes a specific USB device to interact with the system.
+usbguard block-device <id>	Deauthorizes a specific USB device, preventing it from interacting with the system.
+usbguard reject-device <id>	Deauthorizes and removes a specific USB device from the system.
+usbguard generate-policy	Creates an initial policy based on currently connected USB devices.
+usbguard append-rule <rule>	Adds a new rule to the existing policy.
+usbguard remove-rule <id>	Removes a specific rule from the policy.
+Additional Information
+
+    Listing Devices: Use usbguard list-devices to see all devices currently recognized by the system. This command helps you identify which devices are available for authorization or blocking.
+
+    Authorizing Devices: To allow a device, replace <id> with the device's ID in the command usbguard allow-device <id>. This action permits the device to communicate with the system.
+
+    Deauthorizing Devices: The commands usbguard block-device <id> and usbguard reject-device <id> are used to prevent devices from interacting with the system. The difference is that block-device temporarily stops communication, while reject-device removes the device from the system's recognition.
+
