@@ -1,0 +1,45 @@
+At the moment there's no way this can be done using the graphic user interface, but can easily be done from the command line.
+You can do this by using the option --exclude-from [text file of Directories and/or files to exclude]. Here's an example of how I use it:
+
+sudo aptik --backup-all --basepath /media/roy/'Linux Backups'/Aptik --scripted --exclude-from .skipped_files
+
+Aptik will read the text file and skip those files in your home folder when the --exclude-from [text file] is used.
+
+In my example above it reads the .skipped_files file which contains:
+
+Music
+Pictures
+Dropbox
+.Dropbox
+
+Now when I use aptik and use the option --exclude-from .skipped_files it will skip over those folders in my Home directory and the archive it creates is much smaller that if I hadn't used it.
+
+To Backup to Kdrive Infomaniak with APTIK:
+To back up your system using Aptik to a network drive (such as an Infomaniak kDrive mounted via WebDAV), 
+
+
+you must first ensure the network drive is mounted as a local directory on your Linux system, as Aptik primarily backs up to local paths.
+
+1. Mount the Network Drive You need to mount your network storage (e.g., kDrive, NAS, or SMB share) to a specific folder on your computer.
+
+    For kDrive (WebDAV): You can use the official kDrive desktop app to sync a folder, or mount it via command line using davfs2. If using the desktop app, simply note the local path where kDrive syncs (e.g., ~/kDrive). If mounting manually, install davfs2, add your credentials to /etc/davfs2/secrets, and mount the WebDAV URL (e.g., https://<ID>.connect.kdrive.infomaniak.com) to a folder like /mnt/kdrive.
+    For standard Network Shares (SMB/NFS): Use your file manager or mount commands to attach the share to a local directory (e.g., /mnt/backup-drive).
+
+2. Configure Aptik to Use the Mounted Path Once the drive is mounted and visible as a folder in your file system:
+
+    Open your terminal.
+    Run Aptik with the --store option pointing to a folder on your mounted drive.
+
+    bash
+    sudo aptik --store=/path/to/mounted/drive/aptik-backup
+
+    (Replace /path/to/mounted/drive/ with the actual path, e.g., /mnt/kdrive/ or ~/kDrive/).
+    Aptik will now save your applications, settings, and PPA lists directly to that network location.
+
+Important Considerations:
+
+    Connection Stability: Ensure the network drive is mounted before running Aptik. If the connection drops during the backup, the process may fail or result in incomplete data.
+    Permissions: Your user account must have write permissions to the mounted folder.
+    Restoration: To restore, the drive must be mounted at the same path (or you must specify the new path using --restore=/path/to/...).
+
+For detailed steps on mounting Infomaniak kDrive via WebDAV on Linux, you can refer to the official guide: Se connecter à kDrive par WebDAV.
