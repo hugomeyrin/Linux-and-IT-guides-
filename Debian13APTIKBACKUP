@@ -22,7 +22,8 @@ you must first ensure the network drive is mounted as a local directory on your 
 
 1. Mount the Network Drive You need to mount your network storage (e.g., kDrive, NAS, or SMB share) to a specific folder on your computer.
 
-    For kDrive (WebDAV): You can use the official kDrive desktop app to sync a folder, or mount it via command line using davfs2. If using the desktop app, simply note the local path where kDrive syncs (e.g., ~/kDrive). If mounting manually, install davfs2, add your credentials to /etc/davfs2/secrets, and mount the WebDAV URL (e.g., https://<ID>.connect.kdrive.infomaniak.com) to a folder like /mnt/kdrive.
+    For kDrive (WebDAV): You can use the official kDrive desktop app to sync a folder, or mount it via command line using davfs2. If using the desktop app, simply note the local path where kDrive syncs (e.g., ~/kDrive). 
+If mounting manually, install davfs2, add your credentials to /etc/davfs2/secrets, and mount the WebDAV URL (e.g., https://<ID>.connect.kdrive.infomaniak.com) to a folder like /mnt/kdrive.
     For standard Network Shares (SMB/NFS): Use your file manager or mount commands to attach the share to a local directory (e.g., /mnt/backup-drive).
 
 2. Configure Aptik to Use the Mounted Path Once the drive is mounted and visible as a folder in your file system:
