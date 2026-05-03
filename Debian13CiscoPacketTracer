@@ -1,1 +1,30 @@
 https://www.computernetworkingnotes.com/ccna-study-guide/download-packet-tracer-for-windows-and-linux.html
+
+
+The white page issue in Cisco Packet Tracer 9 on Debian 13 (likely running a Wayland session or specific Qt libraries) is a known rendering problem often related to the login screen or interface elements failing to draw correctly.
+
+Here are the most effective solutions based on reported cases:
+
+1. Force OpenGL Software Rendering This is the most common fix for blank interfaces in Packet Tracer on Linux. Launch the application with the software rendering flag to bypass hardware acceleration issues:
+
+bash
+/opt/pt/bin/packettracer --software-rendering
+
+If this works, you can make it permanent by editing the desktop entry file (/usr/share/applications/cisco-pt.desktop) and adding --software-rendering to the Exec line.
+
+2. Check Wayland vs. X11 Debian 13 defaults to Wayland for many desktop environments (GNOME, KDE). Packet Tracer 9 has known compatibility issues with Wayland.
+
+    Log out of your session.
+    At the login screen, look for a gear icon or session selector.
+    Choose "GNOME on Xorg" or "Plasma (X11)" instead of the default Wayland session.
+    Log in and try launching Packet Tracer again.
+
+3. Missing Fonts or Qt Libraries If the page is white specifically at the login screen, it may be unable to render the web view due to missing dependencies. Ensure you have the necessary Qt WebEngine components:
+
+bash
+sudo apt update
+sudo apt install libqt5webengine5 libqt5webchannel5 fonts-wqy-zenhei
+
+Note: Packet Tracer 9 is Qt5-based; ensure Qt5 libraries are installed even if your system defaults to Qt6.
+
+choose international 
