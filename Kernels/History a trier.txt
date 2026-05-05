@@ -1,0 +1,40 @@
+91  sudo dpkg -i linux-main-modules-v4l2loopback-7.0.0-14-generic_7.0.0-14.14+3_amd64.deb
+  292  sudo apt-get install linux-image-7.0.0-14-generi
+  293  cd Téléchargements/
+  294  wget http://archive.ubuntu.com/ubuntu/pool/main/l/linux-signed/linux-image-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  295  cd ..
+  296  cd kernel\ 7.0.14/
+  297  sudo dpkg -i *.deb
+  298  sudo dpkg -i linux-image-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  299  sudo apt install -f
+  300  sudo apt purge v4l2loopback-dkms
+  301  sudo apt autoremove
+  302  sudo dpkg -i linux-image-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  303  wget http://archive.ubuntu.com/ubuntu/pool/main/l/linux/linux-modules-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  304  ls
+  305  wget linux-main-modules-zfs-7.0.0-14-generic_7.0.0-14.14+3_amd64.deb
+  306  wget http://archive.ubuntu.com/ubuntu/pool/main/l/linux-main-signed/linux-main-modules-zfs-7.0.0-14-generic_7.0.0-14.14+3_amd64.deb
+  307  wget http://ftp.de.debian.org/debian/pool/main/w/wireless-regdb/wireless-regdb_2026.02.04-1~deb13u1_all.deb
+  308  ls
+  309  sudo dpkg -i *.deb
+  310  ls
+  311  sudo dpkg --configure -a
+  312  sudo apt --fix-broken install
+  313  sudo apt install linux-headers-$(uname -r)
+  314  wget http://archive.ubuntu.com/ubuntu/pool/main/l/linux/linux-headers-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  315  sudo dpkg -i *.deb
+  316  ls
+  317  sudo dpkg -i linux-headers-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  318  sudo apt install -f
+  319  sudo dpkg -i linux-headers-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  320  wget http://archive.ubuntu.com/ubuntu/pool/main/l/linux/linux-headers-7.0.0-14_7.0.0-14.14_all.deb
+  321  sudo dpkg -i linux-headers-7.0.0-14_7.0.0-14.14_amd64.deb
+  322  sudo dpkg -i linux-headers-7.0.0-14_7.0.0-14.14_all.deb
+  323  sudo dpkg -i linux-image-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  324  sudo dpkg -i linux-main-modules-v4l2loopback-7.0.0-14-generic_7.0.0-14.14+3_amd64.deb
+  325  sudo dpkg -i linux-main-modules-zfs-7.0.0-14-generic_7.0.0-14.14+3_amd64.deb
+  326  sudo dpkg -i linux-modules-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  327  sudo dpkg -i wireless-regdb_2026.02.04-1~deb13u1_all.deb
+  328  reboot
+  329  sudo reboot
+  330  history

@@ -1,0 +1,19 @@
+  322  sudo dpkg -i linux-headers-7.0.0-14_7.0.0-14.14_all.deb
+  323  sudo dpkg -i linux-image-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  324  sudo dpkg -i linux-main-modules-v4l2loopback-7.0.0-14-generic_7.0.0-14.14+3_amd64.deb
+  325  sudo dpkg -i linux-main-modules-zfs-7.0.0-14-generic_7.0.0-14.14+3_amd64.deb
+  326  sudo dpkg -i linux-modules-7.0.0-14-generic_7.0.0-14.14_amd64.deb
+  327  sudo dpkg -i wireless-regdb_2026.02.04-1~deb13u1_all.deb
+  328  reboot
+
+
+  ps: ceci a permis de faire foncionner droidcam avec le téléphone Correctement + plus OBS Studio:
+
+  La problèmatique la non installation de videoloopback-dkms correctemnt car il était pas dispo pour le kernel 7.0.3 bpn
+  ni certains 6.xx, genre 6.18 ......
+
+  la preuve que le module est proprement installé c'est ....
+
+  hugo@hugopc:~$ ls /dev/video*
+/dev/video0  /dev/video1  /dev/video2  /dev/video3  /dev/video4   (le dev virtuels apparaîtron)
+
