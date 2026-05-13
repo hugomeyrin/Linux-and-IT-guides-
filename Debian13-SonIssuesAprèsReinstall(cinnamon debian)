@@ -1,0 +1,31 @@
+blueman installed mais il ne marche pas pour les casques bluetooth
+
+Si Blueman indique que le casque est « connecté » mais qu'aucun son ne sort, le problème vient presque toujours de la configuration du serveur audio (PipeWire ou PulseAudio) qui n'arrive pas à basculer la sortie sonore vers le périphérique Bluetooth. C'est un problème fréquent où la connexion établie (profil HFP/HSP ou A2DP) n'est pas activée comme sortie par défaut.
+
+Voici la procédure pour forcer la redirection du son :
+
+    Vérifier et changer la sortie avec Pavucontrol L'outil en ligne de commande ou l'applet système sont souvent insuffisants. Installez le contrôleur de volume PulseAudio qui fonctionne aussi bien avec PipeWire :
+
+    bash
+
+sudo apt install pavucontrol
+
+Lancez pavucontrol depuis votre menu d'applications. Allez dans l'onglet Périphériques de sortie (Output Devices).
+
+    Vérifiez que votre casque Bluetooth apparaît dans la liste.
+    Si une icône de verrou ou un bouton « Définir comme alternative » est présent, cliquez dessus pour définir le casque comme sortie.
+    Dans l'onglet Configuration, assurez-vous que le profil de votre casque est réglé sur « High Fidelity Playback (A2DP Sink) » pour la musique, ou « Handsfree Head Unit (HFP/HSP) » si vous avez besoin du micro (la qualité sonore sera inférieure dans ce mode).
+
+Redémarrer les services audio Parfois, le service audio ne détecte pas le changement d'état de Blueman. Redémarrez le serveur audio sans redémarrer l'ordinateur :
+
+    Si vous utilisez PipeWire (défaut sur les versions récentes de Mint/Cinnamon) :
+
+    bash
+
+systemctl --user restart pipewire pipewire-pulse wireplumber
+
+Si vous utilisez PulseAudio :
+
+bash
+
+systemctl --user restart pulseaudio
