@@ -56,7 +56,7 @@ Si votre but était de passer à la version "Testing" (Trixie) :
     bash
 
     sudo apt update
-    sudo apt full-upgrade
+    * (fait celuila)sudo apt full-upgrade
 
     Attention : La version "Testing" est en pleine mutation (transition t64), des cassures temporaires sont fréquentes.
 
