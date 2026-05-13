@@ -1,0 +1,74 @@
+Ce problème indique un conflit de versions majeur causé par un mélange de dépôts incompatibles (probablement un mélange entre Debian 12 "Bookworm" et Debian 13 "Trixie", ou une mise à jour vers la version "Testing" qui est actuellement en transition).
+
+Les suffixes t64 (comme dans libparted2t64) indiquent une recompilation massive des bibliothèques pour la future version de Debian (Debian 13), qui entre en conflit avec les versions standards de la version stable actuelle (Debian 12). Le paquet wireshark montre clairement le conflit : il tente d'installer une version de Debian 13 (4.4.15-0+deb13u1) alors que des composants de Debian 12 (4.0.17-0+deb12u3) sont encore présents.
+
+Voici la démarche pour diagnostiquer et réparer :
+1. Diagnostiquer la source du conflit
+
+Vérifiez votre fichier de sources pour voir si vous avez activé des dépôts "testing", "unstable" ou "sid" par erreur, ou si vous avez oublié de mettre à jour la référence de distribution.
+
+Exécutez :
+
+bash
+
+cat /etc/apt/sources.list
+ls /etc/apt/sources.list.d/
+
+    Si vous êtes sur Debian 12 (Stable) : Vous ne devriez voir que des lignes mentionnant bookworm. Si vous voyez trixie, testing, ou unstable, c'est la cause du problème.
+    Si vous voulez passer à Debian 13 (Testing/Trixie) : Vous devez changer toutes les références de bookworm à trixie (ou testing), puis faire une mise à jour complète, pas partielle.
+
+2. Solution A : Revenir à la stabilité (Recommandé si vous ne vouliez pas changer de version)
+
+Si vous étiez sur Debian 12 et que cela s'est produit accidentellement :
+
+    Éditez /etc/apt/sources.list et assurez-vous que toutes les lignes actives pointent vers bookworm (et non trixie ou testing).
+    Forcez APT à préférer la version stable : Créez un fichier de préférence :
+
+    bash
+
+sudo nano /etc/apt/preferences.d/force-bookworm
+
+Collez-y :
+
+plain text
+
+Package: *
+Pin: release a=bookworm
+Pin-Priority: 1001
+
+Mettez à jour et tentez de corriger :
+
+bash
+
+    sudo apt update
+    sudo apt install --fix-broken
+
+    Note : Si le conflit est trop profond, il faudra peut-être désinstaller manuellement les paquets problématiques (comme wireshark-qt ou les libs t64) avant de relancer la réparation.
+
+3. Solution B : Finaliser la migration vers Debian 13 (Si c'était intentionnel)
+
+Si votre but était de passer à la version "Testing" (Trixie) :
+
+    Assurez-vous que toutes vos sources pointent vers trixie (ou testing).
+    Nettoyez les références obsolètes.
+    Lancez une mise à jour complète (dist-upgrade) qui gère mieux les changements de dépendances majeurs que upgrade :
+
+    bash
+
+    sudo apt update
+    sudo apt full-upgrade
+
+    Attention : La version "Testing" est en pleine mutation (transition t64), des cassures temporaires sont fréquentes.
+
+4. Intervention manuelle (Dernier recours)
+
+Si apt reste bloqué, vous devrez probablement supprimer manuellement les paquets qui "cassent" le système pour permettre la réinstallation propre. Par exemple, si wireshark est le coupable :
+
+bash
+
+sudo apt remove wireshark wireshark-qt wireshark-common
+sudo apt install --fix-broken
+
+Une fois le système réparé, vous pourrez réinstaller wireshark depuis la bonne source.
+
+Quelle est votre situation actuelle ? (Étiez-vous sur Debian 12 stable et avez-vous fait une erreur de manipulation, ou essayiez-vous volontairement de passer à Debian 13 ?) Cela déterminera la commande exacte à utiliser.
