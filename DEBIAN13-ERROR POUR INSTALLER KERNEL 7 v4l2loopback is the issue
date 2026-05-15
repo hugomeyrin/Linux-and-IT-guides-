@@ -1,0 +1,70 @@
+Option 1 : Désinstaller temporairement le module problématique (Recommandé)
+
+Si vous n'avez pas besoin immédiatement de la caméra virtuelle, le plus simple est de retirer le paquet DKMS qui bloque, de finir l'installation du noyau, puis de réinstaller le module plus tard (quand une version compatible sera disponible).
+
+    Supprimez le module DKMS bloquant :
+
+    bash
+
+sudo apt remove --purge v4l2loopback-dkms
+
+Cela retirera le module qui tente de se compiler et qui échoue.
+
+Terminez la configuration des paquets en suspens :
+
+bash
+
+sudo dpkg --configure -a
+
+Cette commande devrait maintenant réussir car le script de compilation du module ne sera plus lancé.
+
+Vérifiez que le noyau est bien installé :
+
+bash
+
+uname -r
+
+
+
+_______________________________________________________________________________________________________-
+
+
+ grep VERSION_CODENAME /etc/os-release
+  612  sudo apt update
+  613  sudo apt install ca-certificates
+  614  printf '%s\n' "Types: deb" "URIs: https://deb.debian.org/debian" "Suites: trixie-backports" "Components: main contrib non-free non-free-firmware" "Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg" | sudo tee /etc/apt/sources.list.d/debian-backports.sources
+  615  sudo nano /etc/apt/sources.list
+  616  sudo nano /etc/apt/sources.list.d/debian-backports.sources
+  617  sudo apt update
+  618  apt search -t bookworm-backports
+  619  sudo nano /etc/apt/sources.list
+  620  sudo apt update
+  621  sudo apt upgrade
+  622  dpkg linux-image-amd64 configure
+  623  dpkg linux-image-amd64 --configure
+  624  dpkg --configure linux-image-amd64 
+  625  sudo dpkg --configure linux-image-amd64 
+  626  sudo apt install -f 
+  627  sudo apt --fix-broken install
+  628  sudo apt update
+  629  sudo apt install --reinstall build-essential kmod make gcc linux-libc-dev
+  630  sudo dpkg --configure -a
+  631  sudo apt remove --purge linux-headers-7.0.4+deb13-amd64
+  632  sudo apt --fix-broken install
+  633  sudo apt update
+  634  cd /etc/apt/sources.list.d/
+  635  rm debian-backports.sources 
+  636  sudo rm debian-backports.sources (effacé)
+  637  sudo apt update
+  638  sudo apt upgrade
+  639  sudo apt autoremove 
+  640  sudo apt autoremove
+  641  sudo apt autoclean 
+  642  uname -r 
+  643  dpkg --configure -a
+  644  sudo dpkg --configure -a
+  645  cat /etc/apt/sources.list
+  646  sudo apt -t trixie-backports install linux-image-amd64 linux-headers-amd64
+  647  sudo apt remove --purge v4l2loopback-dkms
+  648  sudo apt -t trixie-backports install linux-image-amd64 linux-headers-amd64
+  649  sudo dpkg --configure -a
