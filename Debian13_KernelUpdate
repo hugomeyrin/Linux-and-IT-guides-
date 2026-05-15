@@ -1,0 +1,28 @@
+Méthode 2 : Utiliser les Backports (Pour le noyau le plus récent)
+
+Si la version par défaut ne vous suffit pas, vous pouvez activer les dépôts backports qui contiennent des versions plus récentes de certains logiciels, dont le noyau Linux.
+
+    Ajouter les backports à vos sources : Éditez le fichier /etc/apt/sources.list (ou un fichier dans /etc/apt/sources.list.d/) et ajoutez la ligne suivante (assurez-vous que le nom de code correspond bien à trixie ou trixie-backports) :
+
+    plain text
+
+deb http://deb.debian.org/debian trixie-backports main contrib non-free non-free-firmware
+
+Mett à jour et installer le noyau depuis backports :
+
+bash
+
+sudo apt update
+sudo apt -t trixie-backports install linux-image-amd64 linux-headers-amd64
+
+(Remplacez amd64 par votre architecture si nécessaire, bien que ce soit la plus courante).
+
+Redémarrer le système : Une fois l'installation terminée, redémarrez pour utiliser le nouveau noyau :
+
+bash
+
+    sudo reboot
+
+Après le redémarrage, vérifiez la version active avec la commande uname -r.
+
+Note importante : L'utilisation de noyaux très récents sur une version "Testing" comme Debian 13 peut parfois introduire des instabilités mineures. Assurez-vous d'avoir une sauvegarde de vos données critiques avant de modifier le noyau système.
