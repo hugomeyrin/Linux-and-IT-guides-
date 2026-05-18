@@ -1,1 +1,12 @@
+https://administrakt0r.github.io/debian13-optimization/   - FAIT POUR GNOME MAIS TESTONS KDE 
 
+curl -fsSL https://raw.githubusercontent.com/administrakt0r/debian13-gnome-optimize/main/debian13-optimize.sh -o debian13-optimize.sh
+2
+Preview — dry run (zero changes)
+sudo bash debian13-optimize.sh --dry-run
+3
+Apply all optimisations
+sudo bash debian13-optimize.sh
+4
+Reboot to apply all kernel-level changes
+sudo reboot
