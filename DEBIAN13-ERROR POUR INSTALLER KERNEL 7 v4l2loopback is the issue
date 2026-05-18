@@ -4,14 +4,19 @@
 +Clone the latest repository (which contains the timer_setup() fix)             +
 +git clone https://github.com/umlaeute/v4l2loopback.git (the good one)          +
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+GO  TO PHASE 2 !!!!!!!!!!!!!!!!!!!!!!!!
+DOWN BELLOW!!!!!!!!!!!!!!!!!!
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 Option 1 : Désinstaller temporairement le module problématique (Recommandé)
 
-Si vous n'avez pas besoin immédiatement de la caméra virtuelle, le plus simple est de retirer le paquet DKMS qui bloque, de finir l'installation du noyau, 
+Si vous n'avez pas besoin immédiatement de la caméra virtuelle, le plus simple 
+est de retirer le paquet DKMS qui bloque, de finir l'installation du noyau, 
 
 
-puis de réinstaller le module plus tard (quand une version compatible sera disponible).
+puis de réinstaller le module plus tard (quand une version compatible sera 
+disponible).
 
     Supprimez le module DKMS bloquant :
 
@@ -27,7 +32,8 @@ bash
 
 sudo dpkg --configure -a
 
-Cette commande devrait maintenant réussir car le script de compilation du module ne sera plus lancé.
+Cette commande devrait maintenant réussir car le script de compilation du module 
+ne sera plus lancé.
 
 Vérifiez que le noyau est bien installé :
 
@@ -38,13 +44,18 @@ uname -r
 
 
 _______________________________________________________________________________________________________-
-WARNING - history whatch with attention since kernel headers 7, image where reinstalled 
+WARNING - history whatch with attention since kernel headers 7, image 
+where reinstalled 
 
 
  grep VERSION_CODENAME /etc/os-release
   612  sudo apt update
   613  sudo apt install ca-certificates
-  614  printf '%s\n' "Types: deb" "URIs: https://deb.debian.org/debian" "Suites: trixie-backports" "Components: main contrib non-free non-free-firmware" "Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg" | sudo tee /etc/apt/sources.list.d/debian-backports.sources
+  614  printf '%s\n' "Types: deb" "URIs: https://deb.debian.org/debian" 
+"Suites: trixie-backports" "Components: main contrib non-free non-free-firmware" 
+"Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg" 
+| sudo tee /etc/apt/sources.list.d/debian-backports.sources
+
   615  sudo nano /etc/apt/sources.list
   616  sudo nano /etc/apt/sources.list.d/debian-backports.sources
   617  sudo apt update
@@ -82,16 +93,25 @@ WARNING - history whatch with attention since kernel headers 7, image where rein
 _____________________________________________________________________________________________________
 2ND PHASE OF CLEANUP After Linux Kernel 7.0.4.02 
 
-error: implicit declaration of function ‘setup_timer’ [-Wimplicit-function-declaration]
+error: implicit declaration of function ‘setup_timer’
+[-Wimplicit-function-declaration]
 2904 |         setup_timer(&dev->sustain_timer, sustain_timer_clb, nr);
 
-The error implicit declaration of function ‘setup_timer’ confirms that the version of v4l2loopback you are trying to compile is incompatible with kernel 7.0.4.
+The error implicit declaration of function ‘setup_timer’ confirms that
+the version of v4l2loopback you are trying to compile is incompatible with kernel 7.0.4.
 
-In Linux kernel 6.15 and later (including your 7.0.4 version), the old setup_timer() function was completely removed. It was deprecated years ago and replaced by timer_setup(). The source code currently on your system (likely version 0.12.7 or older from the Debian repo) still uses the old function, causing the compilation to fail.
+In Linux kernel 6.15 and later (including your 7.0.4 version), 
+the old setup_timer() function was completely removed. 
+It was deprecated years ago and replaced by timer_setup(). 
+
+The source code currently on your system (likely version 0.12.7 or 
+older from the Debian repo) still uses the old function, causing the compilation to fail.
+
 
 Solution: Use the latest code from GitHub
 
-The maintainers have already fixed this in the most recent versions of the code. You must compile from the latest source rather than the outdated Debian package.
+The maintainers have already fixed this in the most recent versions of the code.
+You must compile from the latest source rather than the outdated Debian package.
 
 Run these commands to fetch the fixed version and compile it:
 
