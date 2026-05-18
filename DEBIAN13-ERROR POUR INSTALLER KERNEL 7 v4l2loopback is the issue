@@ -1,6 +1,17 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++Cause:                                                                         +
++kernel installé incompatible avec official v4l2loopback git                    +
++Clone the latest repository (which contains the timer_setup() fix)             +
++git clone https://github.com/umlaeute/v4l2loopback.git (the good one)          +
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 Option 1 : Désinstaller temporairement le module problématique (Recommandé)
 
-Si vous n'avez pas besoin immédiatement de la caméra virtuelle, le plus simple est de retirer le paquet DKMS qui bloque, de finir l'installation du noyau, puis de réinstaller le module plus tard (quand une version compatible sera disponible).
+Si vous n'avez pas besoin immédiatement de la caméra virtuelle, le plus simple est de retirer le paquet DKMS qui bloque, de finir l'installation du noyau, 
+
+
+puis de réinstaller le module plus tard (quand une version compatible sera disponible).
 
     Supprimez le module DKMS bloquant :
 
