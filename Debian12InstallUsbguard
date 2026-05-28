@@ -1,1 +1,20 @@
 sudo apt -y install usbguard
+Installation and Setup usbguardnotifier
+
+To install USBGuard Notifier, follow these steps:
+
+    Install USBGuard and the notifier:
+        For Debian-based systems: apt install usbguard usbguard-notifier
+        For Fedora-based systems: dnf install usbguard usbguard-notifier
+
+    Start the USBGuard service:
+        Use systemctl enable --now usbguard.service to enable and start the service.
+
+    Configure user permissions for notifications:
+        Allow specific users to listen to device signals using commands like:
+            sudo usbguard add-user USER -d listen
+            sudo usbguard add-user -g GROUP -d listen
+
+    Start the notifier service:
+        Run systemctl start --user usbguard-notifier.service to initiate the notifier.
+
