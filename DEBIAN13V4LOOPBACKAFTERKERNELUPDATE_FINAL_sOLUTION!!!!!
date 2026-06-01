@@ -1,5 +1,19 @@
 To successfully use v4l2loopback on Linux Kernel 7.0.10, you need to ensure you are using a patched version of v4l2loopback (at least v0.15.x). Older versions (v0.12.x) fail to build on 7.x kernels due to internal API changes.
 
+DISCLAMER IN CASE OF FAILED VERSIONS INSTALL:
+
+0 – if installed and didn’t worked lets prepare for reinstallation
+
+sudo dpkg --remove --force-remove-reinstreq v4l2loopback-dkms
+
+locate the folder in case if you downloaded from other source git 
+
+rm -Rf v4l2loopback/
+
+
+
+
+
 
 Ensure you have the dkms framework and your exact linux-headers installed before building.
 
