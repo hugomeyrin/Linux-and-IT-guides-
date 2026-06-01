@@ -1,0 +1,58 @@
+To successfully use v4l2loopback on Linux Kernel 7.0.10, you need to ensure you are using a patched version of v4l2loopback (at least v0.15.x). Older versions (v0.12.x) fail to build on 7.x kernels due to internal API changes.
+
+
+Ensure you have the dkms framework and your exact linux-headers installed before building.
+
+To successfully use v4l2loopback on Linux Kernel 7.0.10, you need to ensure you are using a patched version of v4l2loopback (at least v0.15.x). Older versions (v0.12.x) fail to build on 7.x kernels due to internal API changes. Ensure you have the dkms framework and your exact linux-headers installed before building. [1, 2, 3, 4, 5]
+
+Follow these steps for a smooth setup:
+
+1. Prerequisites
+
+sudo apt update
+sudo apt install dkms make gcc libelf-dev linux-headers-$(uname -r)
+
+For Arch Linux/Manjaro-based systems:
+
+sudo pacman -S dkms make gcc linux-headers
+
+
+2. Install the Compatible v4l2loopback
+For Kernel 7.0.10, you must compile v4l2loopback from source (or install the latest package from testing/AUR) to avoid the timer_setup API compilation errors seen in older versions. [1]
+
+Open terminal 
+
+git clone https://github.com/v4l2loopback/v4l2loopback.git
+cd v4l2loopback
+
+# Compile and install
+
+make clean 
+
+make 
+
+sudo make install
+
+# Update module dependencies
+
+sudo depmod -a
+
+For Arch/Manjaro Users:
+Install v4l2loopback-dkms directly via pacman, ensuring you grab the v0.15.x package or newer
+
+sudo pacman -S v4l2loopback-dkms
+
+3. Load the Module
+Test if the module loads successfully into your Kernel 7.0.10 environment by running:
+sudo modprobe v4l2loopback
+
+4. Create and Configure Your Virtual Camera
+To assign specific properties (like a readable name and compatibility with WebRTC apps like Discord or Zoom), you can pass parameters upon initialization. For example, to create a camera with the label Virtual Cam on /dev/video5: [1]
+sudo modprobe v4l2loopback video_nr=5 card_label="Virtual Cam" exclusive_caps=1
+
+5. Troubleshooting & Next Steps
+·	DKMS Build Failure: If the module fails to build during a system update, ensure your linux-headers version exactly matches uname -r.
+·	Flatpak/OBS Support: If your setup relies on applications running via Flatpak (like OBS Studio) and the loopback device is not detected, you may need to grant device permissions or use flatpak-spawn --host to allow OBS to see the host's v4l2loopback modules.
+
+
+
