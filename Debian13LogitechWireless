@@ -1,0 +1,13 @@
+
+Go to this website and the download will pop up 
+https://ftp.ch.debian.org/debian/pool/main/s/solaar/solaar_1.1.14-4_all.deb
+go to Downloads 
+right click on solaar_1.1.14-4_all.deb choose open a terminal 
+
+Copy this paste on the terminal and hit enter
+sudo dpkg -i solaar_1.1.14-4_all.deb
+
+
+Copy this paste on the terminal and hit enter
+this is to Install any missing dependencies (python and other libraries)
+sudo apt install -f 
