@@ -1,0 +1,10 @@
+gddrescue 
+sudo apt install gddrescue 
+sudo ddrescue -f -n /dev/sdbX /home/hugo/Documents/recovery.img /home/hugo/recovery.log
+
+Caine-live - forensics recovery
+https://www.caine-live.net/page5/page5.html
+
+TestDisk
+https://www.cgsecurity.org/wiki/TestDisk_Livecd
+
