@@ -1,0 +1,9 @@
+Si votre intention était de colorer la syntaxe dans nano (puisque vous avez mentionné "code couler", 
+probablement pour "code coloré"), nano active automatiquement la coloration syntaxique pour de nombreux langages si le fichier a une extension reconnue (comme .sh, .py, .html).
+
+Pour forcer ou vérifier la coloration, assurez-vous que le fichier a la bonne extension ou ajoutez cette ligne dans votre fichier de configuration 
+~/.nanorc :
+
+bash
+Copier
+include /usr/share/nano/*.nanorc
