@@ -1,0 +1,33 @@
+Changing Keybindings in Omarchy
+
+To modify or add keybindings in Omarchy, you will need to access specific configuration files. Here’s how to do it:
+Configuration Files
+File Path	Purpose
+~/.config/hypr/bindings.conf	Basic keybindings configuration
+~/.config/hypr/bindings.lua	Advanced keybindings and customizations
+Steps to Change Keybindings
+
+    Open the Configuration File:
+        Use a text editor to open either bindings.conf for simple changes or bindings.lua for more complex configurations.
+
+    Edit Keybindings:
+        In bindings.conf, you can directly modify existing keybindings or add new ones.
+        In bindings.lua, you can implement more advanced configurations, including scripting and conditional bindings.
+
+    Save Changes:
+        After making your changes, save the file.
+
+    Restart Omarchy:
+        To apply the changes, you may need to restart your session or run a specific command to reload the configuration.
+
+Common Keybindings
+
+Here are some default keybindings you might want to customize:
+Hotkey	Function
+Super + Space	Open Omarchy menu
+Super + F	Toggle full screen
+Super + W	Close the current window
+Super + T	Toggle window between tiling/floating
+
+By following these steps, you can effectively change or add keybindings in Omarchy to suit your preferences.
+learn.omacom.io pacyfist.dev
