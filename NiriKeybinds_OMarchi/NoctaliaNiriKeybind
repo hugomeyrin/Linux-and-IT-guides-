@@ -1,0 +1,18 @@
+If you mean Niri keybinds for controlling Noctalia, add these inside binds {} in ~/.config/niri/config.kdl:
+kdl
+
+Mod+Space { spawn-sh "noctalia msg panel-toggle launcher"; }
+Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
+Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
+
+XF86AudioRaiseVolume { spawn-sh "noctalia msg volume-up"; }
+XF86AudioLowerVolume { spawn-sh "noctalia msg volume-down"; }
+XF86AudioMute { spawn-sh "noctalia msg volume-mute"; }
+XF86MonBrightnessUp { spawn-sh "noctalia msg brightness-up"; }
+XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
+
+Here Mod is usually the Super/Windows key. Noctalia’s Niri docs list these IPC bindings; reload Niri after editing your config. noctalia.dev
+
+Common Niri keys in a CachyOS/Noctalia setup include Mod+Return for terminal, Mod+Ctrl+Return for launcher, Mod+1…9 for workspaces, and Mod+Shift+Escape for the hotkey overlay. Your exact bindings depend on your config. 
+GitHub
+1   
